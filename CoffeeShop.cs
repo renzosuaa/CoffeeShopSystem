@@ -1,4 +1,6 @@
-﻿namespace CoffeeShopSystem
+﻿using System.Runtime.InteropServices;
+
+namespace CoffeeShopSystem
 {
     internal class CoffeeShop
     {
@@ -19,9 +21,9 @@
             {
                 Console.WriteLine(" ------------------------------------------");
                 Console.WriteLine(" Enter Username: ");
-                string userNameInput = Console.ReadLine();
+                string userNameInput = GetUserInput();
                 Console.WriteLine(" Enter Password: ");
-                string userPasswordInput = Console.ReadLine();
+                string userPasswordInput = GetUserInput();
                 Console.WriteLine(" ------------------------------------------");
 
                 if (userNameInput == username && userPasswordInput == userPassword)
@@ -53,11 +55,9 @@
         static void Order()
         {
             string receipt = "";
-            List<Object> orderListBevarage = OrderTemplate("Beverage");
-            List<Object> orderListSnack = OrderTemplate("Snack");
-            receipt += orderListBevarage[1];
-            receipt += orderListSnack[1];
-            receipt += " Total: " + (Convert.ToDouble(orderListBevarage[0]) + Convert.ToDouble(orderListSnack[0]));
+            receipt += OrderingTemplate("Beverage");
+            receipt += OrderingTemplate("Snack");
+            receipt += " Total: " + (GetTotalSoldPerItemType("Beverage") + GetTotalSoldPerItemType("Snack"));
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine("Order Success! \n Here is Your Receipt: ");
             Console.WriteLine(" ------------------------------------------");
@@ -66,44 +66,43 @@
 
         }
 
-        static List<object> OrderTemplate(String typeItem)
+        static void PrintItemMenu(List<Item> menu)
+        {
+            for (int i = 0; i < menu.Count; i++)
+            {
+                Console.WriteLine("[" + i + "] " + menu[i].name + ":  " + menu[i].cost);
+            }
+        }
+        static void AddSoldCount(string name, int orderQuantity)
+        {
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i].name ==name)
+                {
+                    items[i].soldCount += orderQuantity;
+                }
+            }
+        }
+
+        static string OrderingTemplate(String itemType)
         {
             Boolean isOrdering = true;
-            List<Item> orderList = new List<Item>();
-            String orderReceipt = typeItem + "\n";
-            double total = 0;
+            List<Item> orderList = new List<Item>(GetItemsPerType(itemType));
+            String orderReceipt = itemType + "\n";
             do
             {
-                foreach (var i in items)
-                {
-                    if (i.type == typeItem)
-                    {
-                        orderList.Add(i);
-                    }
-                }
-                Console.WriteLine(typeItem);
+                Console.WriteLine(itemType);
                 Console.WriteLine(" ------------------------------------------");
-                for (int i = 0; i < orderList.Count; i++)
-                {
-                    Console.WriteLine("[" + i + "] " + orderList[i].name + ":  " + orderList[i].cost);
-                }
+                PrintItemMenu(orderList);
                 Console.WriteLine(" ------------------------------------------");
                 Console.WriteLine("Enter Order: ");
-                int order = Convert.ToInt16(Console.ReadLine());
+                int order = GetUserInputInt();
                 Console.WriteLine("Enter Quantity: ");
-                int orderQuantity = Convert.ToInt16(Console.ReadLine());
+                int orderQuantity = GetUserInputInt();
                 if (orderList.Count() > order)
                 {
                     orderReceipt += orderQuantity + " " + orderList[order].name + " :" + orderQuantity * orderList[order].cost + "\n";
-
-                    total += orderQuantity * orderList[order].cost;
-                    for (int i = 0; i < items.Count; i++)
-                    {
-                        if (items[i].name == orderList[order].name)
-                        {
-                            items[i].soldCount += orderQuantity;
-                        }
-                    }
+                    AddSoldCount(orderList[order].name, orderQuantity);
                 }
                 else
                 {
@@ -111,17 +110,15 @@
                     Console.WriteLine("Invalid Input");
                 }
 
-                if (IsDone(typeItem))
+                if (IsDone(itemType))
                 {
                     isOrdering = false;
                 }
                 orderList.Clear();
 
             } while (isOrdering);
-            List<Object> orderSummary = new List<Object>();
-            orderSummary.Add(total);
-            orderSummary.Add(orderReceipt);
-            return (orderSummary);
+
+            return orderReceipt;
         }
 
         static void AdminAccess()
@@ -130,50 +127,21 @@
             Console.WriteLine("""
                 [0] View Sold Summary
                 [1] Add Item
-                [2] Delete Beverage
+                [2] Delete Item
                 """);
-            int choice = Convert.ToInt16(Console.ReadLine());
+            int choice = GetUserInputInt();
             if (choice == 0)
             {
-                double totalBeverage = SummaryPerItemTypeAdmin("Beverage");
-                double totalSnacks = SummaryPerItemTypeAdmin("Snack");
-
-                Console.WriteLine("Total: " + (totalBeverage + totalSnacks));
-
+                ViewSoldSummary();
             }
             else if (choice == 1)
             {
-                Console.WriteLine(" ------------------------------------------");
-                Console.WriteLine("Enter Item Type: ");
-                string itemType = Console.ReadLine();
-                Console.WriteLine("Enter Item Name: ");
-                string itemName = Console.ReadLine();
-                Console.WriteLine("Enter Beverage Cost: ");
-                double itemCost = Convert.ToDouble(Console.ReadLine());
-
-                items.Add(new Item(itemName, itemCost, itemType));
-                Console.WriteLine(" ------------------------------------------");
-                Console.WriteLine(itemName + " is ADDED successfully");
-                Console.WriteLine(" ------------------------------------------");
+                AddItem();
 
             }
             else if (choice == 2)
             {
-                Console.WriteLine(" ------------------------------------------");
-                Console.WriteLine("Enter Beverage Name: ");
-                string itemName = Console.ReadLine();
-
-                for (int i = 0; i < items.Count; i++)
-                {
-                    if (items[i].name == itemName)
-                    {
-                        items.RemoveAt(i);
-                        break;
-                    }
-                }
-                Console.WriteLine(" ------------------------------------------");
-                Console.WriteLine(itemName + " is DELETED successfully");
-                Console.WriteLine(" ------------------------------------------");
+                DeleteItem();
             }
             else
             {
@@ -189,30 +157,52 @@
 
         }
 
-        static double SummaryPerItemTypeAdmin(string itemType)
+        static double GetTotalSoldPerItemType(string itemType)
         {
-            List<Item> _items = new List<Item>();
-            double total = 0.00;
+            double total = 0;
+            List<Item> _items = new List<Item>(GetItemsPerType(itemType));
+            foreach (Item item in _items)
+            {
+                double totalSoldPerDrink = item.soldCount * item.cost;          
+                total += totalSoldPerDrink;
+            }
+            return total;
+        }
+
+        static void PrintPerItemTypeSummary(string itemType)
+        {          
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine(itemType + " \t\t" + "COST" + "\t" + "Sold  Count" + "\t" + "Total");
             Console.WriteLine(" ------------------------------------------\n");
+            List<Item> _items = GetItemsPerType(itemType);
+
+            PrintPerItemSummary(_items);
+            Console.WriteLine(" ------------------------------------------");
+            Console.WriteLine("Total: " + GetTotalSoldPerItemType(itemType));
+            Console.WriteLine(" ------------------------------------------\n\n");
+        }
+
+        static void PrintPerItemSummary(List<Item> _items)
+        {
+            foreach (Item j in _items)
+            {
+                double totalSoldPerDrink = j.soldCount * j.cost;
+                Console.WriteLine(j.name + " \t\t" + j.cost + "\t" + j.soldCount + "\t" + totalSoldPerDrink);
+            }
+        }
+
+        static List<Item> GetItemsPerType(string itemType)
+        {
+            List<Item> _items = new List<Item>();
             foreach (Item i in items)
             {
                 if (i.type == itemType)
                 {
                     _items.Add(i);
                 }
+              
             }
-            foreach (Item j in _items)
-            {
-                double totalSoldPerDrink = j.soldCount * j.cost;
-                Console.WriteLine(j.name + " \t\t" + j.cost + "\t" + j.soldCount + "\t" + totalSoldPerDrink);
-                total += totalSoldPerDrink;
-            }
-            Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine("Total: " + total);
-            Console.WriteLine(" ------------------------------------------\n\n");
-            return total;
+            return _items;
         }
 
         static void InitialDrinks()
@@ -231,7 +221,7 @@
             Console.WriteLine("Do You Want To Continue With " + ActionType + " ?");
             Console.WriteLine("[0] Yes  \t [1] No");
             Console.WriteLine("");
-            int choice = Convert.ToInt16(Console.ReadLine());
+            int choice = GetUserInputInt();
             Console.WriteLine(" ------------------------------------------");
 
             if (choice == 0)
@@ -250,6 +240,66 @@
             return false;
 
         }
+
+        static void AddItem()
+        {
+            Console.WriteLine(" ------------------------------------------");
+            Console.WriteLine("Enter Item Type: ");
+            string itemType = GetUserInput();
+            Console.WriteLine("Enter Item Name: ");
+            string itemName = GetUserInput();
+            Console.WriteLine("Enter Beverage Cost: ");
+            double itemCost = GetUserInputDouble();
+
+            items.Add(new Item(itemName, itemCost, itemType));
+            Console.WriteLine(" ------------------------------------------");
+            Console.WriteLine(itemName + " is ADDED successfully");
+            Console.WriteLine(" ------------------------------------------");
+        }
+
+        static void DeleteItem()
+        {
+            Console.WriteLine(" ------------------------------------------");
+            Console.WriteLine("Enter Beverage Name: ");
+            string itemName = GetUserInput();
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (items[i].name == itemName)
+                {
+                    items.RemoveAt(i);
+                    break;
+                }
+            }
+            Console.WriteLine(" ------------------------------------------");
+            Console.WriteLine(itemName + " is DELETED successfully");
+            Console.WriteLine(" ------------------------------------------");
+        }
+
+        static void ViewSoldSummary()
+        {
+            double totalBeverage = GetTotalSoldPerItemType("Beverage");
+            double totalSnacks = GetTotalSoldPerItemType("Snack");
+            PrintPerItemTypeSummary("Beverage");
+            PrintPerItemTypeSummary("Snack");
+            Console.WriteLine("Total: " + (totalBeverage + totalSnacks));
+        }
+
+        static string GetUserInput()
+        {
+            return Console.ReadLine();
+        }
+
+        static int GetUserInputInt()
+        {
+            return Convert.ToInt16(GetUserInput());
+        }
+
+        static double GetUserInputDouble()
+        {
+            return Convert.ToDouble(GetUserInput());
+        }
+
     }
     public class Item
     {
