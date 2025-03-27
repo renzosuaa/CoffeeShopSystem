@@ -1,20 +1,18 @@
 ﻿using System.Runtime.InteropServices;
-
+using CoffeeShopSystem_BusinessDataLogic;
 namespace CoffeeShopSystem
 {
     internal class CoffeeShop
     {
-        static List<Item> items = new List<Item>();
         static void Main(string[] args)
         {
-            InitialDrinks();
+            CoffeeShopProcess.InitialDrinks();
             Login();
         }
 
         static void Login()
+
         {
-            string username = "user1", userPassword = "123", adminName = "admin1", adminPassword = "admin123";
-            bool isNotDoneOrdering = true;
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine("\tWelcome To Caffeine++");
             do
@@ -26,11 +24,11 @@ namespace CoffeeShopSystem
                 string userPasswordInput = GetUserInput();
                 Console.WriteLine(" ------------------------------------------");
 
-                if (userNameInput == username && userPasswordInput == userPassword)
+                if (CoffeeShopProcess.ValidateUser(userNameInput, userPasswordInput))
                 {
                     Order();
                 }
-                else if (userNameInput == adminName && adminPassword == userPasswordInput)
+                else if (CoffeeShopProcess.ValidateAdmin(userNameInput, userPasswordInput))
                 {
                     AdminAccess();
                 }
@@ -48,22 +46,21 @@ namespace CoffeeShopSystem
 
                 Environment.Exit(0);
 
-            } while (isNotDoneOrdering);
+            } while (true);
 
         }
 
         static void Order()
         {
-            string receipt = "";
-            receipt += OrderingTemplate("Beverage");
-            receipt += OrderingTemplate("Snack");
-            receipt += " Total: " + (GetTotalSoldPerItemType("Beverage") + GetTotalSoldPerItemType("Snack"));
+            OrderingTemplate("Beverage");
+            OrderingTemplate("Snack");
+            CoffeeShopProcess.AddTotaltoReceipt();
             Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine("Order Success! \n Here is Your Receipt: ");
+            Console.WriteLine("Order Success! \nHere is Your Receipt: ");
             Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine(receipt);
+            Console.WriteLine(CoffeeShopProcess.orderReceipt);
             Console.WriteLine(" ------------------------------------------");
-
+            CoffeeShopProcess.ClearReceipt();
         }
 
         static void PrintItemMenu(List<Item> menu)
@@ -73,36 +70,26 @@ namespace CoffeeShopSystem
                 Console.WriteLine("[" + i + "] " + menu[i].name + ":  " + menu[i].cost);
             }
         }
-        static void AddSoldCount(string name, int orderQuantity)
-        {
-            for (int i = 0; i < items.Count; i++)
-            {
-                if (items[i].name ==name)
-                {
-                    items[i].soldCount += orderQuantity;
-                }
-            }
-        }
 
-        static string OrderingTemplate(String itemType)
+        static void OrderingTemplate(String itemType)
         {
             Boolean isOrdering = true;
-            List<Item> orderList = new List<Item>(GetItemsPerType(itemType));
-            String orderReceipt = itemType + "\n";
+            CoffeeShopProcess.AddItemToOrderList(itemType);
+            CoffeeShopProcess.AddItemTypeInReceipt(itemType);
             do
             {
                 Console.WriteLine(itemType);
                 Console.WriteLine(" ------------------------------------------");
-                PrintItemMenu(orderList);
+                PrintItemMenu(CoffeeShopProcess.orderList);
                 Console.WriteLine(" ------------------------------------------");
                 Console.WriteLine("Enter Order: ");
                 int order = GetUserInputInt();
                 Console.WriteLine("Enter Quantity: ");
                 int orderQuantity = GetUserInputInt();
-                if (orderList.Count() > order)
+
+                if (CoffeeShopProcess.orderList.Count() > order)
                 {
-                    orderReceipt += orderQuantity + " " + orderList[order].name + " :" + orderQuantity * orderList[order].cost + "\n";
-                    AddSoldCount(orderList[order].name, orderQuantity);
+                    CoffeeShopProcess.AddOrder(order, orderQuantity, itemType);
                 }
                 else
                 {
@@ -113,12 +100,12 @@ namespace CoffeeShopSystem
                 if (IsDone(itemType))
                 {
                     isOrdering = false;
+                    CoffeeShopProcess.ClearOrderList();
                 }
-                orderList.Clear();
-
+                
             } while (isOrdering);
 
-            return orderReceipt;
+            
         }
 
         static void AdminAccess()
@@ -155,33 +142,20 @@ namespace CoffeeShopSystem
 
             return;
 
-        }
-
-        static double GetTotalSoldPerItemType(string itemType)
-        {
-            double total = 0;
-            List<Item> _items = new List<Item>(GetItemsPerType(itemType));
-            foreach (Item item in _items)
-            {
-                double totalSoldPerDrink = item.soldCount * item.cost;          
-                total += totalSoldPerDrink;
-            }
-            return total;
-        }
+        }   
 
         static void PrintPerItemTypeSummary(string itemType)
         {          
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine(itemType + " \t\t" + "COST" + "\t" + "Sold  Count" + "\t" + "Total");
             Console.WriteLine(" ------------------------------------------\n");
-            List<Item> _items = GetItemsPerType(itemType);
-
-            PrintPerItemSummary(_items);
+            PrintPerItemSummary(CoffeeShopProcess.GetItemsPerType(itemType));
             Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine("Total: " + GetTotalSoldPerItemType(itemType));
+            Console.WriteLine("Total: " + CoffeeShopProcess.GetTotalSoldPerItemType(itemType));
             Console.WriteLine(" ------------------------------------------\n\n");
         }
 
+        //yung sold thingy di pa tatanggal
         static void PrintPerItemSummary(List<Item> _items)
         {
             foreach (Item j in _items)
@@ -190,31 +164,7 @@ namespace CoffeeShopSystem
                 Console.WriteLine(j.name + " \t\t" + j.cost + "\t" + j.soldCount + "\t" + totalSoldPerDrink);
             }
         }
-
-        static List<Item> GetItemsPerType(string itemType)
-        {
-            List<Item> _items = new List<Item>();
-            foreach (Item i in items)
-            {
-                if (i.type == itemType)
-                {
-                    _items.Add(i);
-                }
-              
-            }
-            return _items;
-        }
-
-        static void InitialDrinks()
-        {
-            items.Add(new Item("Milktea", 67.00, "Beverage"));
-            items.Add(new Item("Taco", 100.50, "Snack"));
-            items.Add(new Item("Coffee", 69.00, "Beverage"));
-            items.Add(new Item("Pizza", 120.99, "Snack"));
-            items.Add(new Item("Iced Coffee", 80.00, "Beverage"));
-            items.Add(new Item("Waffle", 50.25, "Snack"));
-
-        }
+        
         static Boolean IsDone(string ActionType)
         {
             Console.WriteLine(" ------------------------------------------");
@@ -250,8 +200,7 @@ namespace CoffeeShopSystem
             string itemName = GetUserInput();
             Console.WriteLine("Enter Beverage Cost: ");
             double itemCost = GetUserInputDouble();
-
-            items.Add(new Item(itemName, itemCost, itemType));
+            CoffeeShopProcess.AddItem(itemName,itemCost,itemType);
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine(itemName + " is ADDED successfully");
             Console.WriteLine(" ------------------------------------------");
@@ -263,26 +212,26 @@ namespace CoffeeShopSystem
             Console.WriteLine("Enter Beverage Name: ");
             string itemName = GetUserInput();
 
-            for (int i = 0; i < items.Count; i++)
-            {
-                if (items[i].name == itemName)
-                {
-                    items.RemoveAt(i);
-                    break;
-                }
+            if (CoffeeShopProcess.DeleteItem(itemName)) {
+                Console.WriteLine(" ------------------------------------------");
+                Console.WriteLine(itemName + " is DELETED successfully");
+                Console.WriteLine(" ------------------------------------------");
             }
-            Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine(itemName + " is DELETED successfully");
-            Console.WriteLine(" ------------------------------------------");
+            else
+            {
+                Console.WriteLine(" ------------------------------------------");
+                Console.WriteLine(itemName + " does NOT EXIST");
+                Console.WriteLine(" ------------------------------------------");
+            }
+            
         }
 
         static void ViewSoldSummary()
         {
-            double totalBeverage = GetTotalSoldPerItemType("Beverage");
-            double totalSnacks = GetTotalSoldPerItemType("Snack");
+           
             PrintPerItemTypeSummary("Beverage");
             PrintPerItemTypeSummary("Snack");
-            Console.WriteLine("Total: " + (totalBeverage + totalSnacks));
+            Console.WriteLine("Total: " + CoffeeShopProcess.GetTotalPriceOfOrder());
         }
 
         static string GetUserInput()
@@ -301,18 +250,5 @@ namespace CoffeeShopSystem
         }
 
     }
-    public class Item
-    {
-        public string name;
-        public double cost;
-        public int soldCount = 0;
-        public string type;
-
-        public Item(string name, double cost, string type)
-        {
-            this.name = name;
-            this.cost = cost;
-            this.type = type;
-        }
-    }
+    
 }

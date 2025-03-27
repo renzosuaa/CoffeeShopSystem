@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoffeeShopSystem", "CoffeeShopSystem.csproj", "{9B9EE4EC-4CB1-4C59-BB30-34F71BEFA10E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoffeeShopSystem", "CoffeeShopSystem.csproj", "{9B9EE4EC-4CB1-4C59-BB30-34F71BEFA10E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoffeeShopSystem_BusinessDataLogic", "CoffeeShopSystem_BusinessDataLogic.csproj", "{C4DF19E4-E47F-4FE4-9C38-AEDCABBCCBE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{9B9EE4EC-4CB1-4C59-BB30-34F71BEFA10E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B9EE4EC-4CB1-4C59-BB30-34F71BEFA10E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B9EE4EC-4CB1-4C59-BB30-34F71BEFA10E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4DF19E4-E47F-4FE4-9C38-AEDCABBCCBE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4DF19E4-E47F-4FE4-9C38-AEDCABBCCBE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4DF19E4-E47F-4FE4-9C38-AEDCABBCCBE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4DF19E4-E47F-4FE4-9C38-AEDCABBCCBE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
