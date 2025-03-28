@@ -52,8 +52,10 @@ namespace CoffeeShopSystem
 
         static void Order()
         {
-            OrderingTemplate("Beverage");
-            OrderingTemplate("Snack");
+            foreach (string item in CoffeeShopProcess.itemTypes)
+            {
+                OrderingTemplate(item);
+            }
             CoffeeShopProcess.AddTotaltoReceipt();
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine("Order Success! \nHere is Your Receipt: ");
@@ -103,9 +105,7 @@ namespace CoffeeShopSystem
                     CoffeeShopProcess.ClearOrderList();
                 }
                 
-            } while (isOrdering);
-
-            
+            } while (isOrdering);  
         }
 
         static void AdminAccess()
@@ -139,7 +139,6 @@ namespace CoffeeShopSystem
             {
                 AdminAccess();
             }
-
             return;
 
         }   
@@ -188,7 +187,6 @@ namespace CoffeeShopSystem
                 IsDone(ActionType);
             }
             return false;
-
         }
 
         static void AddItem()
@@ -223,7 +221,6 @@ namespace CoffeeShopSystem
                 Console.WriteLine(itemName + " does NOT EXIST");
                 Console.WriteLine(" ------------------------------------------");
             }
-            
         }
 
         static void ViewSoldSummary()
@@ -248,7 +245,5 @@ namespace CoffeeShopSystem
         {
             return Convert.ToDouble(GetUserInput());
         }
-
     }
-    
 }

@@ -27,7 +27,7 @@ namespace CoffeeShopSystem_BusinessDataLogic
         public static void AddOrder(int order, int quantity,string itemType)
         { 
             List<Item> orderList = new List<Item>(GetItemsPerType(itemType));
-            orderReceipt += order + " " + orderList[order].name + " :" + quantity * orderList[order].cost + "\n";
+            orderReceipt += quantity + " " + orderList[order].name + " :" + quantity * orderList[order].cost + "\n";
             AddSoldCount(orderList[order].name, quantity);
         }
 
@@ -46,9 +46,7 @@ namespace CoffeeShopSystem_BusinessDataLogic
 
         public static void AddTotaltoReceipt()
         {
-            
             orderReceipt += " Total: " + GetTotalPriceOfOrder();
-
         }
 
         public static double GetTotalPriceOfOrder()
@@ -57,10 +55,8 @@ namespace CoffeeShopSystem_BusinessDataLogic
             foreach (string itemType in itemTypes)
             {
                 total += GetTotalSoldPerItemType(itemType);
-            }
-            
+            }     
             return total;
-
         }
 
         public static double GetTotalSoldPerItemType(string itemType)
@@ -135,7 +131,6 @@ namespace CoffeeShopSystem_BusinessDataLogic
             items.Add(new Item("Pizza", 120.99, "Snack"));
             items.Add(new Item("Iced Coffee", 80.00, "Beverage"));
             items.Add(new Item("Waffle", 50.25, "Snack"));
-
         }
     }
 }

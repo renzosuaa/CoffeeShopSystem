@@ -8,6 +8,6 @@
 	  </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="CoffeeShopSystem_BusinessDataLogic.csproj" />
+    <ProjectReference Include="..\CoffeeShop_BusinessDataLogic\CoffeeShopSystem_BusinessDataLogic.csproj" />
   </ItemGroup>	  
 </Project>
