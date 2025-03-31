@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Collections.Specialized;
+using System.Runtime.InteropServices;
 using CoffeeShopSystem_BusinessDataLogic;
 namespace CoffeeShopSystem
 {
@@ -6,53 +7,106 @@ namespace CoffeeShopSystem
     {
         static void Main(string[] args)
         {
-            CoffeeShopProcess.InitialDrinks();
-            Login();
+            ItemProcess.InitialDrinks();
+            StartUp();
         }
 
-        static void Login()
-
+        static void StartUp()
         {
-            Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine("\tWelcome To Caffeine++");
             do
             {
                 Console.WriteLine(" ------------------------------------------");
-                Console.WriteLine(" Enter Username: ");
-                string userNameInput = GetUserInput();
-                Console.WriteLine(" Enter Password: ");
-                string userPasswordInput = GetUserInput();
+                Console.WriteLine("\tWelcome To Caffeine++");
+                Console.WriteLine(" ------------------------------------------\n");
+                Console.WriteLine("""
+                [0] Login
+                [1] Register
+                [2] Continue As Guest
+                """);
                 Console.WriteLine(" ------------------------------------------");
+                int input = CoffeeShopProcess.GetUserInputInt();
 
-                if (CoffeeShopProcess.ValidateUser(userNameInput, userPasswordInput))
-                {
-                    Order();
-                }
-                else if (CoffeeShopProcess.ValidateAdmin(userNameInput, userPasswordInput))
-                {
-                    AdminAccess();
-                }
-                else
-                {
-                    Console.WriteLine(" ------------------------------------------");
-                    Console.WriteLine("Wrong Username Or Password!");
-                    Console.WriteLine(" ------------------------------------------");
-                }
-
-                if (!IsDone("Program"))
+                if (input == 0)
                 {
                     Login();
                 }
+                else if (input == 1)
+                {
+                    Register();
+                }
+                else if (input == 2)
+                {
+                    Order();
+                }
+                else
+                {
+                    Console.WriteLine("Error: Invalid Output");
+                    Console.WriteLine(" ------------------------------------------");
+                }
 
-                Environment.Exit(0);
-
+                if (IsDone("Program"))
+                {
+                    Environment.Exit(0);
+                }
             } while (true);
+        }
+
+        static void Register()
+        {
+            Console.WriteLine(" ------------------------------------------");
+            Console.WriteLine("Enter Username:");
+            string userNameInput = CoffeeShopProcess.GetUserInput();
+            Console.WriteLine("Enter Password:");
+            string userPassword = CoffeeShopProcess.GetUserInput();
+            Console.WriteLine("Confirm Password:");
+            string userConfirmPassword = CoffeeShopProcess.GetUserInput();
+            Console.WriteLine(" ------------------------------------------");
+
+            if (!UserProcess.ValidatePassword(userPassword, userConfirmPassword))
+            {
+                Console.WriteLine("Error: Password Don't Match!");
+                Console.WriteLine(" ------------------------------------------");
+                Register();
+            } 
+            else
+            {
+                UserProcess.RegisterUser(userNameInput, userPassword);
+                Console.WriteLine("Success: Registration Complete");
+                StartUp();
+            }
+
+        }
+
+        static void Login()
+        {
+            Console.WriteLine(" ------------------------------------------");
+            Console.WriteLine(" Enter Username: ");
+            string userNameInput = CoffeeShopProcess.GetUserInput();
+            Console.WriteLine(" Enter Password: ");
+            string userPasswordInput = CoffeeShopProcess.GetUserInput();
+            Console.WriteLine(" ------------------------------------------");
+
+            if (UserProcess.ValidateUser(userNameInput, userPasswordInput))
+            {
+                Order();
+            }
+            else if (UserProcess.ValidateAdmin(userNameInput, userPasswordInput))
+            {
+                AdminAccess();
+            }
+            else
+            {
+                Console.WriteLine(" ------------------------------------------");
+                Console.WriteLine("Error: Wrong Username or Password!");
+                Console.WriteLine(" ------------------------------------------");
+            }
 
         }
 
         static void Order()
         {
-            foreach (string item in CoffeeShopProcess.itemTypes)
+            Console.WriteLine(" ------------------------------------------\n");
+            foreach (string item in ItemProcess.itemTypes)
             {
                 OrderingTemplate(item);
             }
@@ -85,13 +139,14 @@ namespace CoffeeShopSystem
                 PrintItemMenu(CoffeeShopProcess.orderList);
                 Console.WriteLine(" ------------------------------------------");
                 Console.WriteLine("Enter Order: ");
-                int order = GetUserInputInt();
+                int order = CoffeeShopProcess.GetUserInputInt();
                 Console.WriteLine("Enter Quantity: ");
-                int orderQuantity = GetUserInputInt();
+                int orderQuantity = CoffeeShopProcess.GetUserInputInt();
 
-                if (CoffeeShopProcess.orderList.Count() > order)
+                if (CoffeeShopProcess.GetOrderListCount() > order)
                 {
-                    CoffeeShopProcess.AddOrder(order, orderQuantity, itemType);
+                    CoffeeShopProcess.AddOrderToReceipt(order, orderQuantity);
+                    CoffeeShopProcess.AddSoldCountOfOrder(CoffeeShopProcess.GetOrderName(order), orderQuantity);
                 }
                 else
                 {
@@ -116,24 +171,33 @@ namespace CoffeeShopSystem
                 [1] Add Item
                 [2] Delete Item
                 """);
-            int choice = GetUserInputInt();
-            if (choice == 0)
-            {
-                ViewSoldSummary();
-            }
-            else if (choice == 1)
-            {
-                AddItem();
+            /*
+                [3] Hide Item
+                [4] Unhide Item
+                [5] Add Item Type
+                [6] Delete Item Type
+                [7] Hide Item Type
+                [8] Unhide Item Type
+             */
+            int choice = CoffeeShopProcess.GetUserInputInt();
 
-            }
-            else if (choice == 2)
+            switch (choice)
             {
-                DeleteItem();
-            }
-            else
-            {
-                AdminAccess();
-            }
+                case 0:
+                    ViewSoldSummary();
+                    break;
+                case 1:
+                    AddItem(); 
+                    break;
+                case 2:
+                    DeleteItem();
+                    break;
+                default:
+                    Console.WriteLine(" ------------------------------------------");
+                    Console.WriteLine("Error: Invalid Input!");
+                    AdminAccess();
+                    break;
+            }      
 
             if (!IsDone("Admin Access"))
             {
@@ -148,7 +212,7 @@ namespace CoffeeShopSystem
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine(itemType + " \t\t" + "COST" + "\t" + "Sold  Count" + "\t" + "Total");
             Console.WriteLine(" ------------------------------------------\n");
-            PrintPerItemSummary(CoffeeShopProcess.GetItemsPerType(itemType));
+            PrintPerItemSummary(ItemProcess.GetItemsPerType(itemType));
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine("Total: " + CoffeeShopProcess.GetTotalSoldPerItemType(itemType));
             Console.WriteLine(" ------------------------------------------\n\n");
@@ -170,7 +234,7 @@ namespace CoffeeShopSystem
             Console.WriteLine("Do You Want To Continue With " + ActionType + " ?");
             Console.WriteLine("[0] Yes  \t [1] No");
             Console.WriteLine("");
-            int choice = GetUserInputInt();
+            int choice = CoffeeShopProcess.GetUserInputInt();
             Console.WriteLine(" ------------------------------------------");
 
             if (choice == 0)
@@ -193,12 +257,12 @@ namespace CoffeeShopSystem
         {
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine("Enter Item Type: ");
-            string itemType = GetUserInput();
+            string itemType = CoffeeShopProcess.GetUserInput();
             Console.WriteLine("Enter Item Name: ");
-            string itemName = GetUserInput();
-            Console.WriteLine("Enter Beverage Cost: ");
-            double itemCost = GetUserInputDouble();
-            CoffeeShopProcess.AddItem(itemName,itemCost,itemType);
+            string itemName = CoffeeShopProcess.GetUserInput();
+            Console.WriteLine("Enter " + itemType + "Cost: ");
+            double itemCost = CoffeeShopProcess.GetUserInputDouble();
+            ItemProcess.AddItem(itemName,itemCost,itemType);
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine(itemName + " is ADDED successfully");
             Console.WriteLine(" ------------------------------------------");
@@ -207,10 +271,10 @@ namespace CoffeeShopSystem
         static void DeleteItem()
         {
             Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine("Enter Beverage Name: ");
-            string itemName = GetUserInput();
+            Console.WriteLine("Enter Item Name: ");
+            string itemName = CoffeeShopProcess.GetUserInput();
 
-            if (CoffeeShopProcess.DeleteItem(itemName)) {
+            if (ItemProcess.DeleteItem(itemName)) {
                 Console.WriteLine(" ------------------------------------------");
                 Console.WriteLine(itemName + " is DELETED successfully");
                 Console.WriteLine(" ------------------------------------------");
@@ -222,28 +286,13 @@ namespace CoffeeShopSystem
                 Console.WriteLine(" ------------------------------------------");
             }
         }
-
         static void ViewSoldSummary()
         {
-           
-            PrintPerItemTypeSummary("Beverage");
-            PrintPerItemTypeSummary("Snack");
+            foreach(string itemType in ItemProcess.itemTypes)
+            {
+                PrintPerItemTypeSummary(itemType);
+            }
             Console.WriteLine("Total: " + CoffeeShopProcess.GetTotalPriceOfOrder());
-        }
-
-        static string GetUserInput()
-        {
-            return Console.ReadLine();
-        }
-
-        static int GetUserInputInt()
-        {
-            return Convert.ToInt16(GetUserInput());
-        }
-
-        static double GetUserInputDouble()
-        {
-            return Convert.ToDouble(GetUserInput());
         }
     }
 }
