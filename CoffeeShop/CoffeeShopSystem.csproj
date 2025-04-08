@@ -9,6 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CoffeeShopCommon\CoffeeShopCommon.csproj" />
-    <ProjectReference Include="..\CoffeeShop_BusinessDataLogic\CoffeeShopSystem_BusinessLogic.csproj" />
+    <ProjectReference Include="..\CoffeeShop_BusinessLogic\CoffeeShopSystem_BusinessLogic.csproj" />
   </ItemGroup>	  
 </Project>
