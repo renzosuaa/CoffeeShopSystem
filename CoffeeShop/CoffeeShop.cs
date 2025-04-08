@@ -1,13 +1,14 @@
 ﻿using System.Collections.Specialized;
 using System.Runtime.InteropServices;
-using CoffeeShopSystem_BusinessDataLogic;
+using CoffeeShopSystem_BusinessLogic;
+using CoffeeShopCommon;
 namespace CoffeeShopSystem
 {
     internal class CoffeeShop
     {
         static void Main(string[] args)
         {
-            ItemProcess.InitialDrinks();
+            CoffeeShopProcess.InitialDrinks();
             StartUp();
         }
 
@@ -36,7 +37,7 @@ namespace CoffeeShopSystem
                 }
                 else if (input == 2)
                 {
-                    Order();
+                    OrderingInterface.Order();
                 }
                 else
                 {
@@ -88,7 +89,7 @@ namespace CoffeeShopSystem
 
             if (UserProcess.ValidateUser(userNameInput, userPasswordInput))
             {
-                Order();
+                OrderingInterface.Order();
             }
             else if (UserProcess.ValidateAdmin(userNameInput, userPasswordInput))
             {
@@ -101,66 +102,6 @@ namespace CoffeeShopSystem
                 Console.WriteLine(" ------------------------------------------");
             }
 
-        }
-
-        static void Order()
-        {
-            Console.WriteLine(" ------------------------------------------\n");
-            foreach (string item in ItemProcess.itemTypes)
-            {
-                OrderingTemplate(item);
-            }
-            CoffeeShopProcess.AddTotaltoReceipt();
-            Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine("Order Success! \nHere is Your Receipt: ");
-            Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine(CoffeeShopProcess.orderReceipt);
-            Console.WriteLine(" ------------------------------------------");
-            CoffeeShopProcess.ClearReceipt();
-        }
-
-        static void PrintItemMenu(List<Item> menu)
-        {
-            for (int i = 0; i < menu.Count; i++)
-            {
-                Console.WriteLine("[" + i + "] " + menu[i].name + ":  " + menu[i].cost);
-            }
-        }
-
-        static void OrderingTemplate(String itemType)
-        {
-            Boolean isOrdering = true;
-            CoffeeShopProcess.AddItemToOrderList(itemType);
-            CoffeeShopProcess.AddItemTypeInReceipt(itemType);
-            do
-            {
-                Console.WriteLine(itemType);
-                Console.WriteLine(" ------------------------------------------");
-                PrintItemMenu(CoffeeShopProcess.orderList);
-                Console.WriteLine(" ------------------------------------------");
-                Console.WriteLine("Enter Order: ");
-                int order = CoffeeShopProcess.GetUserInputInt();
-                Console.WriteLine("Enter Quantity: ");
-                int orderQuantity = CoffeeShopProcess.GetUserInputInt();
-
-                if (CoffeeShopProcess.GetOrderListCount() > order)
-                {
-                    CoffeeShopProcess.AddOrderToReceipt(order, orderQuantity);
-                    CoffeeShopProcess.AddSoldCountOfOrder(CoffeeShopProcess.GetOrderName(order), orderQuantity);
-                }
-                else
-                {
-                    Console.WriteLine(" ------------------------------------------");
-                    Console.WriteLine("Invalid Input");
-                }
-
-                if (IsDone(itemType))
-                {
-                    isOrdering = false;
-                    CoffeeShopProcess.ClearOrderList();
-                }
-                
-            } while (isOrdering);  
         }
 
         static void AdminAccess()
@@ -212,13 +153,12 @@ namespace CoffeeShopSystem
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine(itemType + " \t\t" + "COST" + "\t" + "Sold  Count" + "\t" + "Total");
             Console.WriteLine(" ------------------------------------------\n");
-            PrintPerItemSummary(ItemProcess.GetItemsPerType(itemType));
+            PrintPerItemSummary(CoffeeShopProcess.GetItemsPerType(itemType));
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine("Total: " + CoffeeShopProcess.GetTotalSoldPerItemType(itemType));
             Console.WriteLine(" ------------------------------------------\n\n");
         }
 
-        //yung sold thingy di pa tatanggal
         static void PrintPerItemSummary(List<Item> _items)
         {
             foreach (Item j in _items)
@@ -228,7 +168,7 @@ namespace CoffeeShopSystem
             }
         }
         
-        static Boolean IsDone(string ActionType)
+        internal static Boolean IsDone(string ActionType)
         {
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine("Do You Want To Continue With " + ActionType + " ?");
@@ -262,7 +202,7 @@ namespace CoffeeShopSystem
             string itemName = CoffeeShopProcess.GetUserInput();
             Console.WriteLine("Enter " + itemType + "Cost: ");
             double itemCost = CoffeeShopProcess.GetUserInputDouble();
-            ItemProcess.AddItem(itemName,itemCost,itemType);
+            CoffeeShopProcess.AddItem(itemName,itemCost,itemType);
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine(itemName + " is ADDED successfully");
             Console.WriteLine(" ------------------------------------------");
@@ -274,7 +214,7 @@ namespace CoffeeShopSystem
             Console.WriteLine("Enter Item Name: ");
             string itemName = CoffeeShopProcess.GetUserInput();
 
-            if (ItemProcess.DeleteItem(itemName)) {
+            if (CoffeeShopProcess.DeleteItem(itemName)) {
                 Console.WriteLine(" ------------------------------------------");
                 Console.WriteLine(itemName + " is DELETED successfully");
                 Console.WriteLine(" ------------------------------------------");
@@ -288,7 +228,7 @@ namespace CoffeeShopSystem
         }
         static void ViewSoldSummary()
         {
-            foreach(string itemType in ItemProcess.itemTypes)
+            foreach(string itemType in CoffeeShopProcess.GetItemTypes())
             {
                 PrintPerItemTypeSummary(itemType);
             }

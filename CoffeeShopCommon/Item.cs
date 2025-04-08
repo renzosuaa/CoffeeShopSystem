@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoffeeShopSystem_BusinessDataLogic
+namespace CoffeeShopCommon
 {
      public class Item
      {
@@ -19,5 +19,15 @@ namespace CoffeeShopSystem_BusinessDataLogic
             this.cost = cost;
             this.type = type;
         }
-     }
+
+        public Item(string name, double cost, string type, int soldCount)
+        {
+            this.name = name;
+            this.cost = cost;
+            this.type = type;
+            this.soldCount = soldCount;
+        }
+
+
+    }
 }

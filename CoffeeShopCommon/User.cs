@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoffeeShopSystem_BusinessDataLogic
+namespace CoffeeShopCommon
 {
     public class User
     {

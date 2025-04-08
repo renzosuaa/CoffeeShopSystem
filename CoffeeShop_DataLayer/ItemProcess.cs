@@ -3,13 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using CoffeeShopCommon;
 
-namespace CoffeeShopSystem_BusinessDataLogic
+namespace CoffeeShop_DataLayer
 {
     public class ItemProcess
     {
-        public static List<Item> items = new List<Item>();
-        public static string[] itemTypes = { "Beverage", "Snack" };
+         static List<Item> items = new List<Item>();
+         static string[] itemTypes = { "Beverage", "Snack" };
+
+
+        public static string[] GetItemTypes()
+        {
+            return itemTypes;
+        }
 
         public static void AddItem(string itemName, double itemCost, string itemType)
         {
@@ -57,6 +65,30 @@ namespace CoffeeShopSystem_BusinessDataLogic
         public static int GetItemCount()
         {
             return items.Count;
+        }
+
+        public static double GetItemCost(string itemName)
+        {
+            foreach(Item item in items)
+            {
+                if(item.name == itemName)
+                {
+                    return item.cost;
+                }
+            }
+            return 0; //null
+        }
+
+        public static string GetItemType(string itemName)
+        {
+            foreach (Item item in items)
+            {
+                if (item.name == itemName)
+                {
+                    return item.type;
+                }
+            }
+            return null;
         }
 
         public static void InitialDrinks()

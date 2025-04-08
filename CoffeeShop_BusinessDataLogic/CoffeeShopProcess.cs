@@ -3,18 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoffeeShopCommon;
+using CoffeeShop_DataLayer;
 
-namespace CoffeeShopSystem_BusinessDataLogic
+namespace CoffeeShopSystem_BusinessLogic
 {
     public class CoffeeShopProcess
     {
         public static string orderReceipt = "";
         public static List<Item> orderList = new List<Item>();
-
-        public static void AddOrderToReceipt(int order, int quantity)
-        { 
-            orderReceipt += quantity + " " + orderList[order].name + " :" + quantity * orderList[order].cost + "\n";
-        }
 
         public static void AddSoldCountOfOrder(string name, int quantity)
         {
@@ -39,26 +36,6 @@ namespace CoffeeShopSystem_BusinessDataLogic
             }
         }
 
-        public static void AddItemTypeInReceipt(string itemType)
-        {
-            orderReceipt += itemType + " \n";
-        }
-
-        public static void AddTotaltoReceipt()
-        {
-            orderReceipt += " Total: " + GetTotalPriceOfOrder();
-        }
-
-        public static double GetTotalPriceOfOrder()
-        {
-            double total = 0.00;
-            foreach (string itemType in ItemProcess.itemTypes)
-            {
-                total += GetTotalSoldPerItemType(itemType);
-            }     
-            return total;
-        }
-
         public static double GetTotalSoldPerItemType(string itemType)
         {
             double total = 0;
@@ -71,9 +48,14 @@ namespace CoffeeShopSystem_BusinessDataLogic
             return total;
         }
 
-        public static void ClearReceipt()
+        public static double GetTotalPriceOfOrder()
         {
-            orderReceipt = "";
+            double total = 0.00;
+            foreach (string itemType in ItemProcess.GetItemTypes())
+            {
+                total += GetTotalSoldPerItemType(itemType);
+            }
+            return total;
         }
 
         public static void ClearOrderList()
@@ -95,5 +77,34 @@ namespace CoffeeShopSystem_BusinessDataLogic
         {
             return Convert.ToDouble(GetUserInput());
         }
+
+
+        //helper methods to connect datalayer and UI
+
+        public static bool DeleteItem(string itemName)
+        {
+            return ItemProcess.DeleteItem(itemName);
+        }
+
+        public static List<Item> GetItemsPerType(string itemType)
+        {
+            return ItemProcess.GetItemsPerType(itemType);
+        }
+        public static void AddItem(string itemName, double itemCost, string itemType)
+        {
+            ItemProcess.AddItem(itemName, itemCost, itemType);
+        }
+
+        public static string[] GetItemTypes()
+        {
+            return ItemProcess.GetItemTypes();
+        }
+
+        public static void InitialDrinks()
+        {
+            ItemProcess.InitialDrinks();
+        }
+
+
     }
 }
