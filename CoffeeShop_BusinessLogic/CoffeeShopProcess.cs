@@ -8,14 +8,17 @@ using CoffeeShop_DataLayer;
 
 namespace CoffeeShopSystem_BusinessLogic
 {
+
+    // general actions
     public class CoffeeShopProcess
     {
-        public static string orderReceipt = "";
         public static List<Item> orderList = new List<Item>();
+        IItemProcess DataProcess = new ItemProcess_Text();
+        public AItemProcess ItemProcess = new ItemProcess_Text();
 
-        public static void AddSoldCountOfOrder(string name, int quantity)
+        public  void AddSoldCountOfOrder(string name, int quantity)
         {
-            ItemProcess.AddSoldCount(name, quantity);
+            DataProcess.AddSoldCount(name, quantity);
         }
 
         public static string GetOrderName(int order)
@@ -28,7 +31,7 @@ namespace CoffeeShopSystem_BusinessLogic
             return orderList.Count;
         }
 
-        public static void AddItemToOrderList(string itemType)
+        public  void AddItemToOrderList(string itemType)
         {
             foreach (Item _item in ItemProcess.GetItemsPerType(itemType))
             {
@@ -36,7 +39,7 @@ namespace CoffeeShopSystem_BusinessLogic
             }
         }
 
-        public static double GetTotalSoldPerItemType(string itemType)
+        public double GetTotalSoldPerItemType(string itemType)
         {
             double total = 0;
             List<Item> _items = new List<Item>(ItemProcess.GetItemsPerType(itemType));
@@ -48,7 +51,7 @@ namespace CoffeeShopSystem_BusinessLogic
             return total;
         }
 
-        public static double GetTotalPriceOfOrder()
+        public  double GetTotalPriceOfOrder()
         {
             double total = 0.00;
             foreach (string itemType in ItemProcess.GetItemTypes())
@@ -81,30 +84,23 @@ namespace CoffeeShopSystem_BusinessLogic
 
         //helper methods to connect datalayer and UI
 
-        public static bool DeleteItem(string itemName)
+        public bool DeleteItem(string itemName)
         {
-            return ItemProcess.DeleteItem(itemName);
+            return DataProcess.DeleteItem(itemName);
         }
 
-        public static List<Item> GetItemsPerType(string itemType)
+        public List<Item> GetItemsPerType(string itemType)
         {
             return ItemProcess.GetItemsPerType(itemType);
         }
-        public static void AddItem(string itemName, double itemCost, string itemType)
+        public  void AddItem(string itemName, double itemCost, string itemType)
         {
-            ItemProcess.AddItem(itemName, itemCost, itemType);
+            DataProcess.AddItem(itemName, itemCost, itemType);
         }
 
-        public static string[] GetItemTypes()
+        public string[] GetItemTypes()
         {
             return ItemProcess.GetItemTypes();
         }
-
-        public static void InitialDrinks()
-        {
-            ItemProcess.InitialDrinks();
-        }
-
-
     }
 }

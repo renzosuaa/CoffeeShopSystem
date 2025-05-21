@@ -9,11 +9,14 @@ using CoffeeShop_DataLayer;
 
 namespace CoffeeShopSystem_BusinessLogic
 {
+
+    //per order action
+
     public class Order
     {
-         List<Item> orders = new List<Item>();
-
-        public  void AddOrder(string name, int quantity)
+        List<Item> orders = new List<Item>();
+        CoffeeShopProcess process = new CoffeeShopProcess();
+        public void AddOrder(string name, int quantity)
         {
             if (checkIfContains(name))
             {
@@ -21,12 +24,11 @@ namespace CoffeeShopSystem_BusinessLogic
             }
             else
             {
-                orders.Add(new Item(name,ItemProcess.GetItemCost(name),ItemProcess.GetItemType(name),quantity));
-                
+                orders.Add(new Item(name, process.ItemProcess.GetItemCost(name), process.ItemProcess.GetItemType(name),quantity));
             }
         }
 
-        void AddSoldCount(string name, int orderQuantity)
+        public void AddSoldCount(string name, int orderQuantity)
         {
             foreach(Item order in orders)
             {
