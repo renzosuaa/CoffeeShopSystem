@@ -8,9 +8,11 @@ using CoffeeShopCommon;
 
 namespace CoffeeShop_DataLayer
 {
-    public class ItemProcess_InMemory : AItemProcess, IItemProcess
+    public class ItemProcess_InMemory : IItemProcess
     {
-        ItemProcess_InMemory()
+        protected List<Item> items = new List<Item>();
+        protected string[] itemTypes = { "Beverage", "Snack" };
+        public ItemProcess_InMemory()
         {
             InitialDrinks();
         }
@@ -53,6 +55,61 @@ namespace CoffeeShop_DataLayer
             items.Add(new Item("Iced Coffee", 80.00, "Beverage"));
             items.Add(new Item("Waffle", 50.25, "Snack"));
         }
+        
+
+        //will be remove later
+
+        public string[] GetItemTypes()
+        {
+            return itemTypes;
+        }
+        public List<Item> GetItemsPerType(string itemType)
+        {
+            List<Item> _items = new List<Item>();
+            foreach (Item i in items)
+            {
+                if (i.type == itemType)
+                {
+                    _items.Add(i);
+                }
+            }
+            return _items;
+        }
+
+        public List<Item> GetItems()
+        {
+            return items;
+        }
+
+        public int GetItemCount()
+        {
+            return items.Count;
+        }
+
+        public double GetItemCost(string itemName)
+        {
+            foreach (Item item in items)
+            {
+                if (item.name == itemName)
+                {
+                    return item.cost;
+                }
+            }
+            return 0; //null
+        }
+
+        public string GetItemType(string itemName)
+        {
+            foreach (Item item in items)
+            {
+                if (item.name == itemName)
+                {
+                    return item.type;
+                }
+            }
+            return null;
+        }
+
 
 
     }

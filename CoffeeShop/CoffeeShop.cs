@@ -6,10 +6,11 @@ namespace CoffeeShopSystem
 {
     internal class CoffeeShop
     {
-        
+        internal static CoffeeShopProcess process;
         static void Main(string[] args)
         {
-            StartUp();
+            process = new CoffeeShopProcess();
+            StartUp(); 
         }
 
         static void StartUp()
@@ -68,7 +69,7 @@ namespace CoffeeShopSystem
                 Console.WriteLine("Error: Password Don't Match!");
                 Console.WriteLine(" ------------------------------------------");
                 Register();
-            } 
+            }
             else
             {
                 UserProcess.RegisterUser(userNameInput, userPassword);
@@ -89,7 +90,7 @@ namespace CoffeeShopSystem
 
             if (UserProcess.ValidateUser(userNameInput, userPasswordInput))
             {
-              new OrderingInterface().Order();
+                new OrderingInterface().Order();
             }
             else if (UserProcess.ValidateAdmin(userNameInput, userPasswordInput))
             {
@@ -128,7 +129,7 @@ namespace CoffeeShopSystem
                     ViewSoldSummary();
                     break;
                 case 1:
-                    AddItem(); 
+                    AddItem();
                     break;
                 case 2:
                     DeleteItem();
@@ -138,7 +139,7 @@ namespace CoffeeShopSystem
                     Console.WriteLine("Error: Invalid Input!");
                     AdminAccess();
                     break;
-            }      
+            }
 
             if (!IsDone("Admin Access"))
             {
@@ -146,16 +147,16 @@ namespace CoffeeShopSystem
             }
             return;
 
-        }   
+        }
 
         static void PrintPerItemTypeSummary(string itemType)
-        {          
+        {
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine(itemType + " \t\t" + "COST" + "\t" + "Sold  Count" + "\t" + "Total");
             Console.WriteLine(" ------------------------------------------\n");
-            PrintPerItemSummary(OrderingInterface.process.GetItemsPerType(itemType));
+            PrintPerItemSummary(process.GetItemsPerType(itemType));
             Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine("Total: " + OrderingInterface.process.GetTotalSoldPerItemType(itemType));
+            Console.WriteLine("Total: " + process.GetTotalSoldPerItemType(itemType));
             Console.WriteLine(" ------------------------------------------\n\n");
         }
 
@@ -167,7 +168,7 @@ namespace CoffeeShopSystem
                 Console.WriteLine(j.name + " \t\t" + j.cost + "\t" + j.soldCount + "\t" + totalSoldPerDrink);
             }
         }
-        
+
         internal static Boolean IsDone(string ActionType)
         {
             Console.WriteLine(" ------------------------------------------");
@@ -202,7 +203,7 @@ namespace CoffeeShopSystem
             string itemName = CoffeeShopProcess.GetUserInput();
             Console.WriteLine("Enter " + itemType + "Cost: ");
             double itemCost = CoffeeShopProcess.GetUserInputDouble();
-            OrderingInterface.process.AddItem(itemName,itemCost,itemType);
+            process.AddItem(itemName, itemCost, itemType);
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine(itemName + " is ADDED successfully");
             Console.WriteLine(" ------------------------------------------");
@@ -214,7 +215,8 @@ namespace CoffeeShopSystem
             Console.WriteLine("Enter Item Name: ");
             string itemName = CoffeeShopProcess.GetUserInput();
 
-            if (OrderingInterface.process.DeleteItem(itemName)) {
+            if (process.DeleteItem(itemName))
+            {
                 Console.WriteLine(" ------------------------------------------");
                 Console.WriteLine(itemName + " is DELETED successfully");
                 Console.WriteLine(" ------------------------------------------");
@@ -228,11 +230,41 @@ namespace CoffeeShopSystem
         }
         static void ViewSoldSummary()
         {
-            foreach(string itemType in OrderingInterface.process.GetItemTypes())
+            var itemTypes = process.GetItemTypes();
+            if (itemTypes == null || itemTypes.Count() == 0)
             {
-                PrintPerItemTypeSummary(itemType);
+                Console.WriteLine("No items sold yet.");
+                return;
             }
-            Console.WriteLine("Total: " + OrderingInterface.process.GetTotalPriceOfOrder());
+
+            double grandTotal = 0;
+            foreach (string itemType in itemTypes)
+            {
+                Console.WriteLine(" ------------------------------------------");
+                Console.WriteLine(itemType + " \t\t" + "COST" + "\t" + "Sold  Count" + "\t" + "Total");
+                Console.WriteLine(" ------------------------------------------");
+
+                var items = process.GetItemsPerType(itemType);
+                if (items != null && items.Count > 0)
+                {
+                    double totalSoldPerType = 0;
+                    foreach (var item in items)
+                    {
+                        double totalSoldPerItem = item.soldCount * item.cost;
+                        totalSoldPerType += totalSoldPerItem;
+                        Console.WriteLine(item.name + " \t\t" + item.cost + "\t" + item.soldCount + "\t" + totalSoldPerItem);
+                    }
+                    Console.WriteLine(" ------------------------------------------");
+                    Console.WriteLine("Total for " + itemType + ": " + totalSoldPerType);
+                    grandTotal += totalSoldPerType;
+                }
+                else
+                {
+                    Console.WriteLine("No items sold in this category.");
+                }
+                Console.WriteLine(" ------------------------------------------\n");
+            }
+            Console.WriteLine("Grand Total: " + grandTotal);
         }
     }
 }

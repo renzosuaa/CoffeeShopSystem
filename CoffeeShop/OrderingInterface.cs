@@ -13,12 +13,11 @@ namespace CoffeeShopSystem
 {
     internal class OrderingInterface
     {
-        internal static CoffeeShopProcess process = new CoffeeShopProcess();
         Order Orders = new Order();
         internal void Order()
         {
             Console.WriteLine(" ------------------------------------------");
-            foreach (string item in process.GetItemTypes())
+            foreach (string item in CoffeeShop.process.GetItemTypes())
             {
                 OrderingTemplate(item);
             }
@@ -37,10 +36,10 @@ namespace CoffeeShopSystem
             }
         }
 
-         void OrderingTemplate(String itemType)
+        void OrderingTemplate(String itemType)
         {
             Boolean isOrdering = true;
-            process.AddItemToOrderList(itemType);
+            CoffeeShop.process.AddItemToOrderList(itemType);
             do
             {
                 Console.WriteLine(itemType);
@@ -55,10 +54,10 @@ namespace CoffeeShopSystem
                 if (CoffeeShopProcess.GetOrderListCount() > order)
                 {
                     string orderName = CoffeeShopProcess.GetOrderName(order);
-                    process.AddSoldCountOfOrder(orderName, orderQuantity);
+                    CoffeeShop.process.AddSoldCountOfOrder(orderName, orderQuantity);
                     Orders.AddOrder(orderName, orderQuantity);
-                    
-                    
+
+
                 }
                 else
                 {

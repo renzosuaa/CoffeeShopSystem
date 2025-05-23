@@ -8,9 +8,11 @@ using System.Xml.Linq;
 
 namespace CoffeeShop_DataLayer
 {
-    public class ItemProcess_Text : AItemProcess, IItemProcess
+    public class ItemProcess_Text : IItemProcess
     {
-        string file_path = "items.txt";
+        string file_path = "storage\\items.txt";
+        protected List<Item> items = new List<Item>();
+        protected string[] itemTypes = { "Beverage", "Snack" };
 
         public ItemProcess_Text()
         {
@@ -77,6 +79,60 @@ namespace CoffeeShop_DataLayer
                 }
             }
             return false;
+        }
+
+
+        //will be remove later
+
+        public string[] GetItemTypes()
+        {
+            return itemTypes;
+        }
+        public List<Item> GetItemsPerType(string itemType)
+        {
+            List<Item> _items = new List<Item>();
+            foreach (Item i in items)
+            {
+                if (i.type == itemType)
+                {
+                    _items.Add(i);
+                }
+            }
+            return _items;
+        }
+
+        public List<Item> GetItems()
+        {
+            return items;
+        }
+
+        public int GetItemCount()
+        {
+            return items.Count;
+        }
+
+        public double GetItemCost(string itemName)
+        {
+            foreach (Item item in items)
+            {
+                if (item.name == itemName)
+                {
+                    return item.cost;
+                }
+            }
+            return 0; //null
+        }
+
+        public string GetItemType(string itemName)
+        {
+            foreach (Item item in items)
+            {
+                if (item.name == itemName)
+                {
+                    return item.type;
+                }
+            }
+            return null;
         }
     }
 }

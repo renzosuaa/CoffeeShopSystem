@@ -6,28 +6,20 @@ using System.Threading.Tasks;
 
 namespace CoffeeShopCommon
 {
-     public class Item
-     {
-        public string name;
-        public double cost;
-        public int soldCount = 0;
-        public string type;
 
-        public Item(string name, double cost, string type)
-        {
-            this.name = name;
-            this.cost = cost;
-            this.type = type;
-        }
+    public class Item
+    {
+        public string name { get; set; }
+        public double cost { get; set; }
+        public int soldCount { get; set; }
+        public string type { get; set; }
 
-        public Item(string name, double cost, string type, int soldCount)
+        public Item(string name, double cost, string type, int soldCount = 0)
         {
             this.name = name;
             this.cost = cost;
             this.type = type;
             this.soldCount = soldCount;
         }
-
-
     }
 }

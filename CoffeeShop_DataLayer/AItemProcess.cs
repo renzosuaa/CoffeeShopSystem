@@ -28,6 +28,11 @@ namespace CoffeeShop_DataLayer
             return _items;
         }
 
+        public List<Item> GetItems()
+        {
+            return items;
+        }
+
         public int GetItemCount()
         {
             return items.Count;
