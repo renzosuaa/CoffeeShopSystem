@@ -1,0 +1,6 @@
+Milktea|67|Beverage|0
+Taco|100.5|Snack|0
+Coffee|69|Beverage|2
+Pizza|120.99|Snack|2
+Iced Coffee|80|Beverage|4
+Waffle|50.25|Snack|3
