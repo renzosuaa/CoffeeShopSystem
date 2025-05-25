@@ -15,7 +15,6 @@ namespace CoffeeShopSystem_BusinessLogic
         public static List<Item> orderList;
         internal static ItemProcess_SQLServer DataProcess = new ItemProcess_SQLServer();
 
-
         public CoffeeShopProcess()
         {
             orderList = new List<Item>();
@@ -23,7 +22,7 @@ namespace CoffeeShopSystem_BusinessLogic
 
         public void AddSoldCountOfOrder(string name, int quantity)
         {
-            DataProcess.AddSoldCount(name, quantity);  
+            DataProcess.AddSoldCount(name, quantity);
         }
 
         public static string GetOrderName(int order)
@@ -36,7 +35,7 @@ namespace CoffeeShopSystem_BusinessLogic
             return orderList.Count;
         }
 
-        public  void AddItemToOrderList(string itemType)
+        public void AddItemToOrderList(string itemType)
         {
             foreach (Item _item in DataProcess.GetItemsPerType(itemType))
             {
@@ -56,7 +55,7 @@ namespace CoffeeShopSystem_BusinessLogic
             return total;
         }
 
-        public  double GetTotalPriceOfOrder()
+        public double GetTotalPriceOfOrder()
         {
             double total = 0.00;
             foreach (string itemType in DataProcess.GetItemTypes())
@@ -102,7 +101,7 @@ namespace CoffeeShopSystem_BusinessLogic
         {
             return DataProcess.GetItemsPerType(itemType);
         }
-        public  void AddItem(string itemName, double itemCost, string itemType)
+        public void AddItem(string itemName, double itemCost, string itemType)
         {
             DataProcess.AddItem(itemName, itemCost, itemType);
             orderList.Add(new Item(itemName, itemCost, itemType));
@@ -118,4 +117,6 @@ namespace CoffeeShopSystem_BusinessLogic
             return DataProcess.GetItems();
         }
     }
+
+
 }

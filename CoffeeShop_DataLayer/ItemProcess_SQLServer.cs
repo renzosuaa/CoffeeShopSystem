@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,42 +15,43 @@ namespace CoffeeShop_DataLayer
         protected string[] itemTypes = { "Beverage", "Snack" };
 
         static string connectionString
-        = "Data Source =DESKTOP-55DMAU9\\pc; Initial Catalog = items; Integrated Security = False; TrustServerCertificate=True;";
+        = "Data Source =DESKTOP-55DMAU9\\SQLEXPRESS02; Initial Catalog = CoffeeShop; Integrated Security = True; TrustServerCertificate=True;";
 
-        static SqlConnection sqlConnection;
+        static SqlConnection sqlConnection = new SqlConnection(connectionString);
 
-         void InitializeData()
+
+        public ItemProcess_SQLServer()
         {
-            string selectStatement = "SELECT AccountNumber, AccountName, Bank, PIN, Balance FROM BankDetails";
+            items = new List<Item>(InitializeData());
+        }
 
+        List<Item> InitializeData()
+        {
+            string selectStatement = "SELECT name, cost, soldCount, type FROM items";
+
+            List<Item> _items = new List<Item>();
             SqlCommand selectCommand = new SqlCommand(selectStatement, sqlConnection);
 
             sqlConnection.Open();
             SqlDataReader reader = selectCommand.ExecuteReader();
             while (reader.Read())
             {
-                //deserialize
+                //Serealize data from database to Item object
 
                 Item item = new Item();
-                item.name = reader["name"].ToString();
+                item.name = reader["name"].ToString().Trim(); //fix later why it doesn't work without trim
                 item.cost = Convert.ToDouble(reader["cost"].ToString());
                 item.soldCount = Convert.ToInt32(reader["soldCount"].ToString());
-                item.type = reader["type"].ToString();
-                items.Add(item);
+                item.type = reader["type"].ToString().Trim(); // 
+                _items.Add(item);
             }
-
             sqlConnection.Close();
+            return _items;
         }
 
-
-        public ItemProcess_SQLServer()
-        {
-            sqlConnection = new SqlConnection(connectionString);
-            InitializeData();
-        }
         public void AddItem(string itemName, double itemCost, string itemType)
         {
-            var insertStatement = "INSERT INTO BankDetails VALUES (@name, @cost, @soldCount, @type)";
+            var insertStatement = "INSERT INTO items VALUES (@name, @cost, @soldCount, @type)";
             Item item = new Item(itemName, itemCost, itemType);
             SqlCommand insertCommand = new SqlCommand(insertStatement, sqlConnection);
 
@@ -64,9 +66,10 @@ namespace CoffeeShop_DataLayer
             sqlConnection.Close();
         }
 
+
         public void AddSoldCount(string name, int orderQuantity)
         {
-            
+
             for (int i = 0; i < items.Count; i++)
             {
                 if (items[i].name == name)
@@ -77,19 +80,15 @@ namespace CoffeeShop_DataLayer
 
                     SqlCommand updateCommand = new SqlCommand(updateStatement, sqlConnection);
 
+                    updateCommand.Parameters.AddWithValue("@name", name);
                     updateCommand.Parameters.AddWithValue("@soldCount", items[i].soldCount);
                     sqlConnection.Open();
                     updateCommand.ExecuteNonQuery();
 
                 }
             }
-            
-
-            
-
             sqlConnection.Close();
         }
-
         public bool DeleteItem(string itemName)
         {
             for (int i = 0; i < items.Count; i++)
@@ -110,7 +109,8 @@ namespace CoffeeShop_DataLayer
         }
 
 
-        //Delete
+
+        //will be remove later
 
         public string[] GetItemTypes()
         {
@@ -162,6 +162,5 @@ namespace CoffeeShop_DataLayer
             }
             return null;
         }
-
     }
 }
