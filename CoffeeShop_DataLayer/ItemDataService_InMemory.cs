@@ -8,11 +8,12 @@ using CoffeeShopCommon;
 
 namespace CoffeeShop_DataLayer
 {
-    public class ItemProcess_InMemory : IItemProcess
+    public class ItemDataService_InMemory : IItemDataService
     {
-        protected List<Item> items = new List<Item>();
-        protected string[] itemTypes = { "Beverage", "Snack" };
-        public ItemProcess_InMemory()
+        internal List<Item> items = new List<Item>();
+        string[] itemTypes = { "Beverage", "Snack" };
+
+        public ItemDataService_InMemory()
         {
             InitialDrinks();
         }

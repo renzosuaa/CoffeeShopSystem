@@ -8,13 +8,13 @@ using System.Xml.Linq;
 
 namespace CoffeeShop_DataLayer
 {
-    public class ItemProcess_Text : IItemProcess
+    public class ItemDataService_Text : IItemDataService
     {
-        string file_path = "storage\\items.txt";
+        string file_path = "items.txt";
         protected List<Item> items = new List<Item>();
         protected string[] itemTypes = { "Beverage", "Snack" };
 
-        public ItemProcess_Text()
+        public ItemDataService_Text()
         {
             GetDataFromFile();
         }

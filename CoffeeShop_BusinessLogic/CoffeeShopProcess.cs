@@ -13,7 +13,7 @@ namespace CoffeeShopSystem_BusinessLogic
     public class CoffeeShopProcess
     {
         public static List<Item> orderList;
-        internal static ItemProcess_SQLServer DataProcess = new ItemProcess_SQLServer();
+        internal static ItemDataService_Text DataProcess = new ItemDataService_Text();
 
         public CoffeeShopProcess()
         {

@@ -9,18 +9,16 @@ using System.Threading.Tasks;
 
 namespace CoffeeShop_DataLayer
 {
-    public class ItemProcess_SQLServer : IItemProcess
+    public class ItemDataService_SQLServer : IItemDataService
     {
-        protected List<Item> items;
+        List<Item> items;
         protected string[] itemTypes = { "Beverage", "Snack" };
 
         static string connectionString
         = "Data Source =DESKTOP-55DMAU9\\SQLEXPRESS02; Initial Catalog = CoffeeShop; Integrated Security = True; TrustServerCertificate=True;";
-
         static SqlConnection sqlConnection = new SqlConnection(connectionString);
 
-
-        public ItemProcess_SQLServer()
+        public ItemDataService_SQLServer()
         {
             items = new List<Item>(InitializeData());
         }

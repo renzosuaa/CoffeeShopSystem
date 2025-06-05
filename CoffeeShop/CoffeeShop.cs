@@ -7,6 +7,7 @@ namespace CoffeeShopSystem
     internal class CoffeeShop
     {
         internal static CoffeeShopProcess process;
+        internal static UserProcess UserProcess = new UserProcess();
         static void Main(string[] args)
         {
             process = new CoffeeShopProcess();
@@ -56,8 +57,8 @@ namespace CoffeeShopSystem
         static void Register()
         {
             Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine("Enter Username:");
-            string userNameInput = CoffeeShopProcess.GetUserInput();
+            Console.WriteLine("Enter email:");
+            string emailInput = CoffeeShopProcess.GetUserInput();
             Console.WriteLine("Enter Password:");
             string userPassword = CoffeeShopProcess.GetUserInput();
             Console.WriteLine("Confirm Password:");
@@ -72,7 +73,7 @@ namespace CoffeeShopSystem
             }
             else
             {
-                UserProcess.RegisterUser(userNameInput, userPassword);
+                UserProcess.RegisterUser(emailInput, userPassword);
                 Console.WriteLine("Success: Registration Complete");
                 StartUp();
             }
@@ -82,24 +83,24 @@ namespace CoffeeShopSystem
         static void Login()
         {
             Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine(" Enter Username: ");
-            string userNameInput = CoffeeShopProcess.GetUserInput();
+            Console.WriteLine(" Enter Email: ");
+            string emailInput = CoffeeShopProcess.GetUserInput();
             Console.WriteLine(" Enter Password: ");
             string userPasswordInput = CoffeeShopProcess.GetUserInput();
             Console.WriteLine(" ------------------------------------------");
 
-            if (UserProcess.ValidateUser(userNameInput, userPasswordInput))
-            {
-                new OrderingInterface().Order();
-            }
-            else if (UserProcess.ValidateAdmin(userNameInput, userPasswordInput))
+            if (UserProcess.ValidateAdmin(emailInput, userPasswordInput))
             {
                 AdminAccess();
+            }
+            else if (UserProcess.ValidateUser(emailInput, userPasswordInput))
+            {
+                new OrderingInterface().Order();
             }
             else
             {
                 Console.WriteLine(" ------------------------------------------");
-                Console.WriteLine("Error: Wrong Username or Password!");
+                Console.WriteLine("Error: Wrong Email or Password!");
                 Console.WriteLine(" ------------------------------------------");
             }
 

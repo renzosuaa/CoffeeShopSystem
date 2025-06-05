@@ -1,0 +1,2 @@
+admin1|admin123|Admin
+user1@gmail.com|user123|Customer

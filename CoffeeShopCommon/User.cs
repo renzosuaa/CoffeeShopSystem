@@ -8,13 +8,17 @@ namespace CoffeeShopCommon
 {
     public class User
     {
-        public string userusername;
-        public string password;
+        public string email { get; set; }
 
-        public User(string Name,string Password)
+        public string password { get; set; }
+
+        public string type { get; set; }
+
+        public User(string email,string password, string type)
         {
-            this.userusername = Name;
-            this.password = Password;
+            this.email = email;
+            this.password = password;
+            this.type = type;
         }
 
     }

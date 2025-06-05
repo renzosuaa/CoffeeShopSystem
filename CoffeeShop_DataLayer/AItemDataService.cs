@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CoffeeShop_DataLayer
 {
-    public abstract class AItemProcess 
+    public abstract class AItemDataService 
     {
         protected List<Item> items = new List<Item>();
         protected string[] itemTypes = { "Beverage", "Snack" };

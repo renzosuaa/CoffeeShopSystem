@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace CoffeeShop_DataLayer
 {
-    public class ItemProcess_JSON : IItemProcess
+    public class ItemDataService_JSON : IItemDataService
     {
-        protected List<Item> items;
-        protected string[] itemTypes = { "Beverage", "Snack" };
+        internal List<Item> items;
+        string[] itemTypes = { "Beverage", "Snack" };
 
-        string file_path = "storage\\items.json";
+        string file_path = "items.json";
 
 
-        public ItemProcess_JSON()
+        public ItemDataService_JSON()
         {
             ReadJsonDataFromFile();
         }
