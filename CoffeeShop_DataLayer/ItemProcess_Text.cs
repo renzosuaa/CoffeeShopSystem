@@ -11,7 +11,7 @@ namespace CoffeeShop_DataLayer
     public class ItemProcess_Text : IItemProcess
     {
         string file_path = "storage\\items.txt";
-        protected List<Item> items = new List<Item>();
+        protected static List<Item> items = new List<Item>();
         protected string[] itemTypes = { "Beverage", "Snack" };
 
         public ItemProcess_Text()
@@ -88,7 +88,7 @@ namespace CoffeeShop_DataLayer
         {
             return itemTypes;
         }
-        public List<Item> GetItemsPerType(string itemType)
+        public static List<Item> GetItemsPerType(string itemType)
         {
             List<Item> _items = new List<Item>();
             foreach (Item i in items)

@@ -13,18 +13,18 @@ namespace CoffeeShopSystem
 {
     internal class OrderingInterface
     {
-        Order Orders = new Order();
+        OrderProcess process = new OrderProcess();
         internal void Order()
         {
             Console.WriteLine(" ------------------------------------------");
             foreach (string item in CoffeeShop.process.GetItemTypes())
             {
-                OrderingTemplate(item);
+                OrderingTemplate();
             }
             Console.WriteLine(" ------------------------------------------");
             Console.WriteLine("Order Success! \nHere is Your Receipt: ");
             Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine(Orders.PrintReceipt());
+            Console.WriteLine(process.PrintReceipt());
             Console.WriteLine(" ------------------------------------------");
         }
 
@@ -36,28 +36,28 @@ namespace CoffeeShopSystem
             }
         }
 
-        void OrderingTemplate(String itemType)
+        void OrderingTemplate()
         {
             Boolean isOrdering = true;
-            CoffeeShop.process.AddItemToOrderList(itemType);
             do
             {
-                Console.WriteLine(itemType);
+                //pprint here all the items
+                Console.WriteLine("Items: ");
                 Console.WriteLine(" ------------------------------------------");
-                PrintItemMenu(CoffeeShopProcess.orderList);
+                PrintItemMenu(CoffeeShopProcess.GetAllItems());
                 Console.WriteLine(" ------------------------------------------");
+
                 Console.WriteLine("Enter Order: ");
                 int order = CoffeeShopProcess.GetUserInputInt();
                 Console.WriteLine("Enter Quantity: ");
                 int orderQuantity = CoffeeShopProcess.GetUserInputInt();
 
+
                 if (CoffeeShopProcess.GetOrderListCount() > order)
                 {
-                    string orderName = CoffeeShopProcess.GetOrderName(order);
-                    CoffeeShop.process.AddSoldCountOfOrder(orderName, orderQuantity);
-                    Orders.AddOrder(orderName, orderQuantity);
-
-
+                    Item item = CoffeeShopProcess.GetOrderName(order);
+                    item.soldCount = orderQuantity;
+                    process.AddOrder(item);
                 }
                 else
                 {
@@ -65,10 +65,9 @@ namespace CoffeeShopSystem
                     Console.WriteLine("Invalid Input");
                 }
 
-                if (CoffeeShop.IsDone(itemType))
+                if (CoffeeShop.IsDone("Ordering"))
                 {
                     isOrdering = false;
-                    CoffeeShopProcess.ClearOrderList();
                 }
 
             } while (isOrdering);

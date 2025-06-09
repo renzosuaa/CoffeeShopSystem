@@ -12,51 +12,21 @@ namespace CoffeeShopSystem_BusinessLogic
 
     //per order action
 
-    public class Order
+    public class OrderProcess
     {
-        List<Item> orders = new List<Item>();
-        public void AddOrder(string name, int quantity)
-        {
-            if (checkIfContains(name))
-            {
-                AddSoldCount(name, quantity);
-            }
-            else
-            {
-                orders.Add(new Item(name, CoffeeShopProcess.DataProcess.GetItemCost(name), CoffeeShopProcess.DataProcess.GetItemType(name), quantity));
-            }
-        }
+        Order_DataService Data_Service = new Order_DataService();
+       public void AddOrder(Item item)
+       {
+            Data_Service.AddOrder(item);
+       }
 
-        public void AddSoldCount(string name, int orderQuantity)
-        {
-            foreach (Item order in orders)
-            {
-                if (order.name == name)
-                {
-                    order.soldCount += orderQuantity;
-                    CoffeeShopProcess.DataProcess.AddSoldCount(name,orderQuantity);
-                }
-            }
-        }
-
-        bool checkIfContains(string name)
-        {
-            for (int i = 0; i < orders.Count; i++)
-            {
-                if (orders[i].name == name)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
 
         List<string> GetOrderItemTypes()
         {
             HashSet<string> types = new HashSet<string>();
-            foreach (Item order in orders)
+            foreach (Item item in Data_Service.GetItems())
             {
-                types.Add(order.type);
+                types.Add(item.type);
             }
             return types.ToList();
         }
@@ -65,7 +35,7 @@ namespace CoffeeShopSystem_BusinessLogic
         {
             string summary = "";
             summary += "----------------\n";
-            foreach (Item order in orders)
+            foreach (Item order in Data_Service.GetItems())
             {
                 if (order.type == itemType)
                 {
@@ -79,7 +49,7 @@ namespace CoffeeShopSystem_BusinessLogic
         double GetTotalPerType(string itemType)
         {
             double total = 0;
-            foreach (Item order in orders)
+            foreach (Item order in Data_Service.GetItems())
             {
                 if (order.type == itemType)
                 {
