@@ -15,16 +15,32 @@ namespace CoffeeShopSystem_BusinessLogic
     public class OrderProcess
     {
         Order_DataService Data_Service = new Order_DataService();
-       public void AddOrder(Item item)
-       {
+        
+        public void AddOrder(Item item)
+        {
             Data_Service.AddOrder(item);
-       }
+            
+        }
 
+        public List<Item> GetAllOrderItems()
+        {
+            return Data_Service.GetItems();
+        }
+
+        public void ClearOrder()
+        {
+            Data_Service.ClearOrder();
+        }
+
+
+
+        // for building the receipt
+        // will be move to OrderingINterface
 
         List<string> GetOrderItemTypes()
         {
             HashSet<string> types = new HashSet<string>();
-            foreach (Item item in Data_Service.GetItems())
+            foreach (Item item in GetAllOrderItems())
             {
                 types.Add(item.type);
             }
@@ -35,8 +51,9 @@ namespace CoffeeShopSystem_BusinessLogic
         {
             string summary = "";
             summary += "----------------\n";
-            foreach (Item order in Data_Service.GetItems())
+            foreach (Item order in GetAllOrderItems())
             {
+
                 if (order.type == itemType)
                 {
                     summary += GetSummaryItem(order);
@@ -49,7 +66,7 @@ namespace CoffeeShopSystem_BusinessLogic
         double GetTotalPerType(string itemType)
         {
             double total = 0;
-            foreach (Item order in Data_Service.GetItems())
+            foreach (Item order in GetAllOrderItems())
             {
                 if (order.type == itemType)
                 {

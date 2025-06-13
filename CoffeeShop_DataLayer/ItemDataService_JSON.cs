@@ -1,64 +1,80 @@
-﻿using System;
+﻿using CoffeeShopCommon;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using CoffeeShopCommon;
 
 namespace CoffeeShop_DataLayer
 {
-    public class ItemProcess_InMemory : IItemProcess
+    public class ItemDataService_JSON : IItemDataService
     {
-        protected List<Item> items = new List<Item>();
-        protected string[] itemTypes = { "Beverage", "Snack" };
-        public ItemProcess_InMemory()
+        internal List<Item> items;
+        string[] itemTypes = { "Beverage", "Snack" };
+
+        string file_path = "items.json";
+
+
+        public ItemDataService_JSON()
         {
-            InitialDrinks();
+            ReadJsonDataFromFile();
+        }
+
+        private void ReadJsonDataFromFile()
+        {
+            string jsonText = File.ReadAllText(file_path);
+
+            items = JsonSerializer.Deserialize<List<Item>>(jsonText,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+            );
+
+        }
+
+        private void UpdateFile()
+        {
+            string jsonString = JsonSerializer.Serialize(items, new JsonSerializerOptions
+            { WriteIndented = false });
+
+            File.WriteAllText(file_path, jsonString);
         }
 
         public void AddItem(string itemName, double itemCost, string itemType)
         {
             items.Add(new Item(itemName, itemCost, itemType));
+            UpdateFile();
+
         }
 
-        public  void AddSoldCount(string name, int orderQuantity)
+        public void AddSoldCount(string name, int orderQuantity)
         {
             for (int i = 0; i < items.Count; i++)
             {
                 if (items[i].name == name)
                 {
                     items[i].soldCount += orderQuantity;
+                    UpdateFile();
+
                 }
             }
+
         }
 
-        public  bool DeleteItem(string itemName)
+        public bool DeleteItem(string itemName)
         {
             for (int i = 0; i < items.Count; i++)
             {
                 if (items[i].name == itemName)
                 {
                     items.RemoveAt(i);
+                    UpdateFile();
                     return true;
                 }
             }
             return false;
         }
-
-        public void InitialDrinks()
-        {
-            items.Add(new Item("Milktea", 67.00, "Beverage"));
-            items.Add(new Item("Taco", 100.50, "Snack"));
-            items.Add(new Item("Coffee", 69.00, "Beverage"));
-            items.Add(new Item("Pizza", 120.99, "Snack"));
-            items.Add(new Item("Iced Coffee", 80.00, "Beverage"));
-            items.Add(new Item("Waffle", 50.25, "Snack"));
-        }
         
-
-        //will be remove later
-
         public string[] GetItemTypes()
         {
             return itemTypes;
@@ -75,6 +91,8 @@ namespace CoffeeShop_DataLayer
             }
             return _items;
         }
+
+        //will be remove later
 
         public List<Item> GetItems()
         {
@@ -109,8 +127,6 @@ namespace CoffeeShop_DataLayer
             }
             return null;
         }
-
-
 
     }
 }

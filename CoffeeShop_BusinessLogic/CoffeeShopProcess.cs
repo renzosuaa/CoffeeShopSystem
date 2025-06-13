@@ -12,64 +12,52 @@ namespace CoffeeShopSystem_BusinessLogic
     // general actions
     public class CoffeeShopProcess
     {
-        internal static ItemProcess_InMemory DataProcess = new ItemProcess_InMemory();
-        public static List<Item> itemList  = new List<Item>(DataProcess.GetItems());
+        internal  ItemDataService_InMemory DataProcess = new ItemDataService_InMemory();
+        public  List<Item> itemList  = new List<Item>();
 
         public CoffeeShopProcess()
         {
-            
+            itemList = new List<Item>(DataProcess.GetItems());
         }
 
         //returns all the existing items
-        public static List<Item> GetAllItems()
+        public  List<Item> GetAllItems()
         {
             return itemList;
         }
 
-        public void AddSoldCountOfOrder(string name, int quantity)
+        public void AddSoldCount(List<Item> order)
         {
-            DataProcess.AddSoldCount(name, quantity);  
+            foreach (Item item in order)
+            {
+                DataProcess.AddSoldCount(item.name, item.soldCount);
+            }
+            
         }
 
-
-        public static Item GetOrderName(int order)
+        public Item GetOrderName(int order)
         {
             return itemList[order];
         }
 
-        public static int  GetOrderListCount()
+        public int  GetOrderListCount()
         {
             return itemList.Count;
         }
 
 
-        public double GetTotalSoldPerItemType(string itemType)
+        public double GetTotalPerType(string itemType)
         {
             double total = 0;
-            List<Item> _items = new List<Item>(DataProcess.GetItemsPerType(itemType));
-            foreach (Item item in _items)
+            foreach (Item order in itemList)
             {
-                double totalSoldPerDrink = item.soldCount * item.cost;
-                total += totalSoldPerDrink;
+                if (order.type == itemType)
+                {
+                    total += order.cost * order.soldCount;
+                }
             }
             return total;
         }
-
-        public  double GetTotalPriceOfOrder()
-        {
-            double total = 0.00;
-            foreach (string itemType in DataProcess.GetItemTypes())
-            {
-                total += GetTotalSoldPerItemType(itemType);
-            }
-            return total;
-        }
-
-        public static void UpdateOrderList()
-        {
-            itemList = new List<Item>(GetAllItems());
-        }
-
 
         public static string GetUserInput()
         {
@@ -88,10 +76,7 @@ namespace CoffeeShopSystem_BusinessLogic
 
 
 
-
-
-        //helper methods to connect datalayer and UI
-
+        // use for admin access stuffs
         public bool DeleteItem(string itemName)
         {
             return DataProcess.DeleteItem(itemName);
@@ -113,4 +98,6 @@ namespace CoffeeShopSystem_BusinessLogic
 
         
     }
+
+
 }

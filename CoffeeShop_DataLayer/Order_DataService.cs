@@ -15,41 +15,47 @@ namespace CoffeeShop_DataLayer
         {
             if (checkIfContains(item.name))
             {
-                AddSoldCount(item.name, item.soldCount);
+                UpdateSoldCount(item.name, item.soldCount);
             }
             else
             {
-                order.items.Add(item);
+                Item newItem = new Item
+                {
+                    name = item.name,
+                    cost = item.cost,
+                    type = item.type,
+                    soldCount = item.soldCount
+                };
+                order.items.Add(newItem);
+
             }
         }
 
+        public void ClearOrder()
+        {
+            order.items.Clear();
+        }
 
         public List<Item> GetItems()
         {
+
             return order.items;
         }
 
-        public void AddSoldCount(string name, int orderQuantity)
-        {
-            foreach (Item item in order.items)
+        private void UpdateSoldCount(string name, int orderQuantity)
+        {  
+            for (int i = 0; i < order.items.Count; i++)
             {
-                if (item.name == name)
-                {
-                    item.soldCount += orderQuantity;
+                if (order.items[i].name == name)
+                {                   
+                    order.items[i].soldCount += orderQuantity;                    
                 }
             }
         }
 
-        bool checkIfContains(string name)
+        private bool checkIfContains(string name)
         {
-            for (int i = 0; i < order.items.Count; i++)
-            {
-                if (order.items[i].name == name)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return order.items.Any(item => item.name == name);
         }
     }
 }

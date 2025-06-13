@@ -16,16 +16,13 @@ namespace CoffeeShopSystem
         OrderProcess process = new OrderProcess();
         internal void Order()
         {
-            Console.WriteLine(" ------------------------------------------");
-            foreach (string item in CoffeeShop.process.GetItemTypes())
-            {
-                OrderingTemplate();
-            }
-            Console.WriteLine(" ------------------------------------------");
+            Console.WriteLine("------------------------------------------");
+            OrderingTemplate();
+            Console.WriteLine("------------------------------------------");
             Console.WriteLine("Order Success! \nHere is Your Receipt: ");
-            Console.WriteLine(" ------------------------------------------");
+            Console.WriteLine("------------------------------------------");
             Console.WriteLine(process.PrintReceipt());
-            Console.WriteLine(" ------------------------------------------");
+            Console.WriteLine("------------------------------------------");
         }
 
         static void PrintItemMenu(List<Item> menu)
@@ -41,36 +38,66 @@ namespace CoffeeShopSystem
             Boolean isOrdering = true;
             do
             {
-                //pprint here all the items
+                Console.WriteLine("\n------------------------------------------");
                 Console.WriteLine("Items: ");
-                Console.WriteLine(" ------------------------------------------");
-                PrintItemMenu(CoffeeShopProcess.GetAllItems());
-                Console.WriteLine(" ------------------------------------------");
+                Console.WriteLine("------------------------------------------");
+                PrintItemMenu(CoffeeShop.process.GetAllItems());
+                Console.WriteLine("------------------------------------------");
+                Console.WriteLine("Options:");
+                Console.WriteLine("[V] View Cart");
+                Console.WriteLine("[C] Clear Cart");
+                Console.WriteLine("------------------------------------------");
 
                 Console.WriteLine("Enter Order: ");
-                int order = CoffeeShopProcess.GetUserInputInt();
-                Console.WriteLine("Enter Quantity: ");
-                int orderQuantity = CoffeeShopProcess.GetUserInputInt();
-
-
-                if (CoffeeShopProcess.GetOrderListCount() > order)
+                string strorder = CoffeeShopProcess.GetUserInput();
+                try
                 {
-                    Item item = CoffeeShopProcess.GetOrderName(order);
-                    item.soldCount = orderQuantity;
-                    process.AddOrder(item);
-                }
-                else
-                {
-                    Console.WriteLine(" ------------------------------------------");
-                    Console.WriteLine("Invalid Input");
-                }
+                    
+                    int order = Convert.ToInt32(strorder);
+                    Console.WriteLine("Enter Quantity: ");
+                    int orderQuantity = CoffeeShopProcess.GetUserInputInt();
 
-                if (CoffeeShop.IsDone("Ordering"))
-                {
-                    isOrdering = false;
-                }
+                    if (CoffeeShop.process.GetOrderListCount() > order)
+                    {
+                        Item item = CoffeeShop.process.GetOrderName(order);
+                        Item newItem = new Item(item.name, item.cost, item.type, orderQuantity);
+                        process.AddOrder(newItem);
+                    }
+                    else
+                    {
+                        Console.WriteLine("------------------------------------------");
+                        Console.WriteLine("Invalid Input");
+                    }
 
+                    if (CoffeeShop.IsDone("Ordering"))
+                    {
+                        isOrdering = false;
+                        CoffeeShop.process.AddSoldCount(process.GetAllOrderItems());
+                    }
+                }
+                catch (FormatException)
+                {
+                    if (strorder.ToUpper().Trim() == "V")
+                    {
+                        Console.WriteLine(process.PrintReceipt());
+                    }
+                    else if (strorder.ToUpper().Trim() == "C")
+                    {
+                        process.ClearOrder();
+                        Console.WriteLine("------------------------------------------");
+                        Console.WriteLine("Cart Cleared.");
+                        Console.WriteLine("------------------------------------------");
+                        
+                    }
+                    else
+                    {
+                        Console.WriteLine("------------------------------------------");
+                        Console.WriteLine("Invalid Input, Please enter a valid number or 'done' to finish ordering.");
+                        Console.WriteLine("------------------------------------------");
+                    }
+                }
             } while (isOrdering);
         }
+
     }
 }

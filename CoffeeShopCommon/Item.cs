@@ -21,5 +21,9 @@ namespace CoffeeShopCommon
             this.type = type;
             this.soldCount = soldCount;
         }
+
+        public Item()
+        {
+        }
     }
 }

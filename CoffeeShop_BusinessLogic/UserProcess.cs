@@ -3,40 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CoffeeShop_DataLayer;
 using CoffeeShopCommon;
 
 namespace CoffeeShopSystem_BusinessLogic
 {
     public class UserProcess
     {
-        static List<User> userList = new List<User>();
-        static string adminName = "admin1", adminPassword = "admin123";
+        UserDataService_InMemory userDataService = new UserDataService_InMemory();
 
-        public static bool ValidatePassword(string password, string password2)
+        public bool ValidatePassword(string password, string password2)
         {
-            return password == password2;
+            return userDataService.ValidatePassword(password, password2);
         }
 
-        public static bool ValidateAdmin(string username, string password)
+        public bool ValidateAdmin(string email, string password)
         {
-            return (username == adminName && password == adminPassword);
+            return userDataService.ValidateAdmin(email, password);
         }
 
-        public static void RegisterUser(string username, string password)
+        public void RegisterUser(string email, string password)
         {
-            userList.Add(new User(username, password));
+            userDataService.RegisterUser(email, password);
         }
 
-        public static bool ValidateUser(string username,string password)
+        public bool ValidateUser(string email,string password)
         {
-            foreach(User user in userList)
-            {
-                if (user.userusername == username && user.password == password)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return userDataService.ValidateUser(email, password);
         }
 
     }
