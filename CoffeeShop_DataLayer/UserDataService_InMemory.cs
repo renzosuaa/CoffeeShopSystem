@@ -11,9 +11,12 @@ namespace CoffeeShop_DataLayer
     {
         List<User> userList = new List<User>();
 
+        int IDCounter = 0;
+
         public UserDataService_InMemory()
         {
             DummyDatas();
+            InitializeIDCounter();
         }
 
         public bool ValidatePassword(string password, string password2)
@@ -45,7 +48,7 @@ namespace CoffeeShop_DataLayer
 
         public void RegisterUser(string email, string password)
         {
-            userList.Add(new User(email, password, "Customer"));
+            userList.Add(new User(IDCounter+1,email, password, "Customer"));
         }
 
         public bool ValidateUser(string email, string password)
@@ -62,8 +65,19 @@ namespace CoffeeShop_DataLayer
 
         public void DummyDatas()
         {
-            userList.Add(new User("admin1","admin123", "Admin"));
-            userList.Add(new User("user1", "user123", "Customer"));
+            userList.Add(new User(1,"admin1","admin123", "Admin"));
+            userList.Add(new User(2,"user1", "user123", "Customer"));
+        }
+
+        private void InitializeIDCounter()
+        {
+            foreach (var user in userList)
+            {
+                if (user.userID > IDCounter)
+                {
+                    IDCounter = user.userID;
+                }
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace CoffeeShopSystem_BusinessLogic
 {
     public class UserProcess
     {
-        UserDataService_InMemory userDataService = new UserDataService_InMemory();
+        UserDataService_JSON userDataService = new UserDataService_JSON();
 
         public bool ValidatePassword(string password, string password2)
         {

@@ -11,14 +11,13 @@ namespace CoffeeShop_DataLayer
     {
         List<User> userList = new List<User>();
         string file_path = "users.txt";
+        int IDCounter = 0;
 
         public UserDataService_Text()
         {
             GetData();
-            foreach(User user in userList)
-            {
-                Console.WriteLine(user.email + " " + user.password + " " + user.type);
-            }
+            InitializeIDCounter();
+
         }
 
         void GetData()
@@ -30,16 +29,17 @@ namespace CoffeeShop_DataLayer
                 var parts = line.Split('|');
 
                 userList.Add(new User(
-                    parts[0],
+                    Convert.ToInt32(parts[0]), 
                     parts[1],
-                    parts[2])
+                    parts[2],
+                    parts[3])
                 );
             }
         }
 
         public void RegisterUser(string email, string password)
         {
-            userList.Add(new User(email, password, "Customer"));
+            userList.Add(new User(IDCounter+1,email, password, "Customer"));
             var newLine = $"{email}|{password}|Customer";
             File.AppendAllText(file_path, newLine);
         }
@@ -81,6 +81,17 @@ namespace CoffeeShop_DataLayer
         public bool ValidatePassword(string password, string password2)
         {
             return password == password2;
+        }
+
+        private void InitializeIDCounter()
+        {
+            foreach (var user in userList)
+            {
+                if (user.userID > IDCounter)
+                {
+                    IDCounter = user.userID;
+                }
+            }
         }
     }
 }

@@ -12,14 +12,14 @@ namespace CoffeeShop_DataLayer
     public class ItemDataService_JSON : IItemDataService
     {
         internal List<Item> items;
-        string[] itemTypes = { "Beverage", "Snack" };
-
         string file_path = "items.json";
 
+        int IDCounter = 0;
 
         public ItemDataService_JSON()
         {
             ReadJsonDataFromFile();
+            InitializeIDCounter();
         }
 
         private void ReadJsonDataFromFile()
@@ -29,7 +29,17 @@ namespace CoffeeShop_DataLayer
             items = JsonSerializer.Deserialize<List<Item>>(jsonText,
                 new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
             );
+        }
 
+        private void InitializeIDCounter()
+        {
+            foreach (var item in items)
+            {
+                if (item.itemID > IDCounter)
+                {
+                    IDCounter = item.itemID;
+                }
+            }
         }
 
         private void UpdateFile()
@@ -42,7 +52,7 @@ namespace CoffeeShop_DataLayer
 
         public void AddItem(string itemName, double itemCost, string itemType)
         {
-            items.Add(new Item(itemName, itemCost, itemType));
+            items.Add(new Item(IDCounter+1,itemName, itemCost, itemType));
             UpdateFile();
 
         }
@@ -74,11 +84,18 @@ namespace CoffeeShop_DataLayer
             }
             return false;
         }
-        
-        public string[] GetItemTypes()
+
+        public String[] GetItemTypes()
         {
-            return itemTypes;
+            HashSet<string> types = new HashSet<string>();
+            foreach (Item item in items)
+            {
+                types.Add(item.type);
+            }
+            return types.ToArray();
         }
+
+
         public List<Item> GetItemsPerType(string itemType)
         {
             List<Item> _items = new List<Item>();

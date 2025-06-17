@@ -14,11 +14,13 @@ namespace CoffeeShop_DataLayer
 
         List<User> userList = new List<User>();
         string file_path = "users.json";
+        int IDCounter = 0;
 
 
         public UserDataService_JSON()
         {
             ReadJsonDataFromFile();
+            InitializeIDCounter();
         }
         private void ReadJsonDataFromFile()
         {
@@ -40,9 +42,11 @@ namespace CoffeeShop_DataLayer
 
         public void RegisterUser(string email, string password)
         {
-            userList.Add(new User(email, password, "Customer"));
+            userList.Add(new User(IDCounter+1, email, password, "Customer"));
             UpdateFile();
         }
+
+
 
         public bool ValidateAdmin(string email, string password)
         {
@@ -81,6 +85,17 @@ namespace CoffeeShop_DataLayer
         public bool ValidatePassword(string password, string password2)
         {
             return password == password2;
+        }
+
+        private void InitializeIDCounter()
+        {
+            foreach (var user in userList)
+            {
+                if (user.userID > IDCounter)
+                {
+                    IDCounter = user.userID;
+                }
+            }
         }
     }
 }

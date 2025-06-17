@@ -32,12 +32,7 @@ namespace CoffeeShopSystem_BusinessLogic
             Data_Service.ClearOrder();
         }
 
-
-
-        // for building the receipt
-        // will be move to OrderingINterface
-
-        List<string> GetOrderItemTypes()
+         List<string> GetOrderItemTypes()
         {
             HashSet<string> types = new HashSet<string>();
             foreach (Item item in GetAllOrderItems())
@@ -45,22 +40,6 @@ namespace CoffeeShopSystem_BusinessLogic
                 types.Add(item.type);
             }
             return types.ToList();
-        }
-
-        string GetSummaryPerItemType(string itemType)
-        {
-            string summary = "";
-            summary += "----------------\n";
-            foreach (Item order in GetAllOrderItems())
-            {
-
-                if (order.type == itemType)
-                {
-                    summary += GetSummaryItem(order);
-                    summary += "\n";
-                }
-            }
-            return summary;
         }
 
         double GetTotalPerType(string itemType)
@@ -75,6 +54,10 @@ namespace CoffeeShopSystem_BusinessLogic
             }
             return total;
         }
+
+        // for building the receipt
+        // will be move to OrderingINterface
+
 
         string GetSummaryItem(Item item)
         {
@@ -105,6 +88,22 @@ namespace CoffeeShopSystem_BusinessLogic
             }
             receipt += "Total: " + total;
             return receipt;
+        }
+
+        string GetSummaryPerItemType(string itemType)
+        {
+            string summary = "";
+            summary += "----------------\n";
+            foreach (Item order in GetAllOrderItems())
+            {
+
+                if (order.type == itemType)
+                {
+                    summary += GetSummaryItem(order);
+                    summary += "\n";
+                }
+            }
+            return summary;
         }
     }
 }

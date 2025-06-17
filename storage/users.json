@@ -1,10 +1,12 @@
 [
   {
+    "userID": 1,
     "email": "admin1",
     "password": "admin123",
     "type": "Admin"
   },
   {
+    "userID": 2,
     "email": "user1@gmail.com",
     "password": "user123",
     "type": "Customer"

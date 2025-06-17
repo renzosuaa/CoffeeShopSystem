@@ -15,10 +15,27 @@ namespace CoffeeShop_DataLayer
         protected static List<Item> items = new List<Item>();
         protected string[] itemTypes = { "Beverage", "Snack" };
 
+        int IDCounter = 0;
+
+
         public ItemDataService_Text()
         {
             GetDataFromFile();
+            IntializeIDCounter();
         }
+
+        private void IntializeIDCounter()
+        {
+            foreach (var item in items)
+            {
+                if (item.itemID > IDCounter)
+                {
+                    IDCounter = item.itemID;
+                }
+            }
+        }
+
+
         private void UpdateFile()
         {
             var lines = new string[items.Count];
@@ -40,17 +57,18 @@ namespace CoffeeShop_DataLayer
                 var parts = line.Split('|');
 
                 items.Add(new Item(
-                    parts[0],
-                    Convert.ToDouble(parts[1]),
-                    parts[2],
-                    Convert.ToInt16(parts[3])
+                    Convert.ToInt32(parts[0]), 
+                    parts[1],
+                    Convert.ToDouble(parts[2]),
+                    parts[3],
+                    Convert.ToInt16(parts[4])
                 ));
             }
         }
 
         public void AddItem(string itemName, double itemCost, string itemType)
         {
-            items.Add(new Item(itemName, itemCost, itemType));
+            items.Add(new Item(IDCounter+1,itemName, itemCost, itemType));
             var newLine = $"{itemName}|{itemCost}|{itemType}|0";
             File.AppendAllText(file_path, newLine);
         }
@@ -67,6 +85,8 @@ namespace CoffeeShop_DataLayer
                 }
             }
         }
+
+
 
         public bool DeleteItem(string itemName)
         {
@@ -85,11 +105,17 @@ namespace CoffeeShop_DataLayer
 
         //will be remove later
 
-        public string[] GetItemTypes()
+        public String[] GetItemTypes()
         {
-            return itemTypes;
+            HashSet<string> types = new HashSet<string>();
+            foreach (Item item in items)
+            {
+                types.Add(item.type);
+            }
+            return types.ToArray();
         }
-        public static List<Item> GetItemsPerType(string itemType)
+
+        public List<Item> GetItemsPerType(string itemType)
         {
             List<Item> _items = new List<Item>();
             foreach (Item i in items)

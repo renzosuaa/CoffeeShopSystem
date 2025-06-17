@@ -60,7 +60,7 @@ namespace CoffeeShopSystem
                     if (CoffeeShop.process.GetOrderListCount() > order)
                     {
                         Item item = CoffeeShop.process.GetOrderName(order);
-                        Item newItem = new Item(item.name, item.cost, item.type, orderQuantity);
+                        Item newItem = new Item(item.itemID,item.name, item.cost, item.type, orderQuantity);
                         process.AddOrder(newItem);
                     }
                     else

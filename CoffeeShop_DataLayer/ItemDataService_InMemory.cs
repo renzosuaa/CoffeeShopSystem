@@ -11,16 +11,27 @@ namespace CoffeeShop_DataLayer
     public class ItemDataService_InMemory : IItemDataService
     {
         internal List<Item> items = new List<Item>();
-        string[] itemTypes = { "Beverage", "Snack" };
-
+        int IDcounter = 0;
         public ItemDataService_InMemory()
         {
             InitialDrinks();
+            InitializeIDCounter();
+        }
+
+        private void InitializeIDCounter()
+        {
+            foreach (var item in items)
+            {
+                if (item.itemID > IDcounter)
+                {
+                    IDcounter = item.itemID;
+                }
+            }
         }
 
         public void AddItem(string itemName, double itemCost, string itemType)
         {
-            items.Add(new Item(itemName, itemCost, itemType));
+            items.Add(new Item(IDcounter+1,itemName, itemCost, itemType));
         }
 
         public  void AddSoldCount(string name, int orderQuantity)
@@ -49,21 +60,27 @@ namespace CoffeeShop_DataLayer
 
         public void InitialDrinks()
         {
-            items.Add(new Item("Milktea", 67.00, "Beverage"));
-            items.Add(new Item("Taco", 100.50, "Snack"));
-            items.Add(new Item("Coffee", 69.00, "Beverage"));
-            items.Add(new Item("Pizza", 120.99, "Snack"));
-            items.Add(new Item("Iced Coffee", 80.00, "Beverage"));
-            items.Add(new Item("Waffle", 50.25, "Snack"));
+            items.Add(new Item(0,"Milktea", 67.00, "Beverage"));
+            items.Add(new Item(1,"Taco", 100.50, "Snack"));
+            items.Add(new Item(2,"Coffee", 69.00, "Beverage"));
+            items.Add(new Item(3,"Pizza", 120.99, "Snack"));
+            items.Add(new Item(4,"Iced Coffee", 80.00, "Beverage"));
+            items.Add(new Item(5,"Waffle", 50.25, "Snack"));
         }
-        
+
 
         //will be remove later
 
-        public string[] GetItemTypes()
+        public String[] GetItemTypes()
         {
-            return itemTypes;
+            HashSet<string> types = new HashSet<string>();
+            foreach (Item item in items)
+            {
+                types.Add(item.type);
+            }
+            return types.ToArray();
         }
+
         public List<Item> GetItemsPerType(string itemType)
         {
             List<Item> _items = new List<Item>();
@@ -110,8 +127,5 @@ namespace CoffeeShop_DataLayer
             }
             return null;
         }
-
-
-
     }
 }

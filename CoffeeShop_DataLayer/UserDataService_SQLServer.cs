@@ -20,7 +20,6 @@ namespace CoffeeShop_DataLayer
         {
             var insertStatement = "INSERT INTO Users VALUES (@email, @password, @type)";
             SqlCommand insertCommand = new SqlCommand(insertStatement, sqlConnection);
-
             insertCommand.Parameters.AddWithValue("@email", email);
             insertCommand.Parameters.AddWithValue("@password", password);
             insertCommand.Parameters.AddWithValue("@type", "Customer");

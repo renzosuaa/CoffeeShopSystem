@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="CoffeeShopCommon">
+      <HintPath>..\..\CoffeeShopSystem\CoffeeShop\bin\Debug\net8.0\CoffeeShopCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="CoffeeShopSystem">
+      <HintPath>..\..\CoffeeShopSystem\CoffeeShop\bin\Debug\net8.0\CoffeeShopSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="CoffeeShopSystem_BusinessLogic">
+      <HintPath>..\..\CoffeeShopSystem\CoffeeShop\bin\Debug\net8.0\CoffeeShopSystem_BusinessLogic.dll</HintPath>
+    </Reference>
+    <Reference Include="CoffeeShop_DataLayer">
+      <HintPath>..\..\CoffeeShopSystem\CoffeeShop\bin\Debug\net8.0\CoffeeShop_DataLayer.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

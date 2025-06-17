@@ -37,6 +37,7 @@ namespace CoffeeShop_DataLayer
                 //Serealize data from database to Item object
 
                 Item item = new Item();
+                item.itemID = Convert.ToInt32(reader["itemID"]);
                 item.name = reader["name"].ToString().Trim(); //fix later why it doesn't work without trim
                 item.cost = Convert.ToDouble(reader["cost"].ToString());
                 item.soldCount = Convert.ToInt32(reader["soldCount"].ToString());
@@ -50,13 +51,12 @@ namespace CoffeeShop_DataLayer
         public void AddItem(string itemName, double itemCost, string itemType)
         {
             var insertStatement = "INSERT INTO items VALUES (@name, @cost, @soldCount, @type)";
-            Item item = new Item(itemName, itemCost, itemType);
             SqlCommand insertCommand = new SqlCommand(insertStatement, sqlConnection);
 
-            insertCommand.Parameters.AddWithValue("@name", item.name);
-            insertCommand.Parameters.AddWithValue("@cost", item.cost);
-            insertCommand.Parameters.AddWithValue("@soldCount", item.soldCount);
-            insertCommand.Parameters.AddWithValue("@type", item.type);
+            insertCommand.Parameters.AddWithValue("@name", itemName);
+            insertCommand.Parameters.AddWithValue("@cost", itemCost);
+            insertCommand.Parameters.AddWithValue("@soldCount", 0);
+            insertCommand.Parameters.AddWithValue("@type", itemType);
             sqlConnection.Open();
 
             insertCommand.ExecuteNonQuery();
