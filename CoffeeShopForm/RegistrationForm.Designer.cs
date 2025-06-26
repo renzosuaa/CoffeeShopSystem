@@ -50,7 +50,6 @@
             lblSignUp.Size = new Size(325, 49);
             lblSignUp.TabIndex = 0;
             lblSignUp.Text = "Create an account";
-            lblSignUp.Click += label1_Click;
             // 
             // lblEmail
             // 
@@ -89,7 +88,7 @@
             // 
             txtEmail.BackColor = Color.FromArgb(57, 53, 76);
             txtEmail.Font = new Font("Constantia", 12.75F);
-            txtEmail.ForeColor = Color.FromArgb(86, 82, 105);
+            txtEmail.ForeColor = SystemColors.Control;
             txtEmail.Location = new Point(199, 151);
             txtEmail.Name = "txtEmail";
             txtEmail.Size = new Size(289, 28);
@@ -99,21 +98,23 @@
             // 
             txtPassword1.BackColor = Color.FromArgb(57, 53, 76);
             txtPassword1.Font = new Font("Constantia", 12.75F);
-            txtPassword1.ForeColor = Color.FromArgb(86, 82, 105);
+            txtPassword1.ForeColor = SystemColors.Control;
             txtPassword1.Location = new Point(199, 199);
             txtPassword1.Name = "txtPassword1";
             txtPassword1.Size = new Size(355, 28);
             txtPassword1.TabIndex = 5;
+            txtPassword1.UseSystemPasswordChar = true;
             // 
             // txtPassword2
             // 
             txtPassword2.BackColor = Color.FromArgb(57, 53, 76);
             txtPassword2.Font = new Font("Constantia", 12.75F);
-            txtPassword2.ForeColor = Color.FromArgb(86, 82, 105);
+            txtPassword2.ForeColor = SystemColors.Control;
             txtPassword2.Location = new Point(199, 245);
             txtPassword2.Name = "txtPassword2";
             txtPassword2.Size = new Size(355, 28);
             txtPassword2.TabIndex = 6;
+            txtPassword2.UseSystemPasswordChar = true;
             // 
             // btnRegister
             // 
@@ -156,7 +157,6 @@
             label1.Size = new Size(142, 14);
             label1.TabIndex = 10;
             label1.Text = "Already have an account?";
-            label1.Click += label1_Click_1;
             // 
             // RegistrationForm
             // 
@@ -176,8 +176,8 @@
             Controls.Add(lblSignUp);
             FormBorderStyle = FormBorderStyle.Fixed3D;
             Name = "RegistrationForm";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "RegistrationForm";
-            Load += RegistrationForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -198,7 +198,8 @@
 
             CoffeeShop.userProcess.RegisterUser(txtEmail.Text, txtPassword1.Text);
             MessageBox.Show("Successful: Account Created!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            new SignInForm().Show();
+            this.Hide();
+            new SignInForm().ShowDialog();
             this.Dispose();
         }
 

@@ -51,7 +51,6 @@ namespace CoffeeShopForm
             btnRemove = new Button();
             panel1 = new Panel();
             label2 = new Label();
-            pnlContainer.SuspendLayout();
             pnlContainerSummary.SuspendLayout();
             panel1.SuspendLayout();
             SuspendLayout();
@@ -79,9 +78,8 @@ namespace CoffeeShopForm
             lblSummary.AutoSize = true;
             lblSummary.Location = new Point(3, 0);
             lblSummary.Name = "lblSummary";
-            lblSummary.Size = new Size(38, 15);
+            lblSummary.Size = new Size(0, 15);
             lblSummary.TabIndex = 0;
-            lblSummary.Text = GenerateSummaryText();
             // 
             // btnViewSoldSummary
             // 
@@ -254,9 +252,8 @@ namespace CoffeeShopForm
             Controls.Add(pnlContainer);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "AdminDashBoard";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "AdminDashBoard";
-            Load += AdminDashBoard_Load;
-            pnlContainer.ResumeLayout(false);
             pnlContainerSummary.ResumeLayout(false);
             pnlContainerSummary.PerformLayout();
             panel1.ResumeLayout(false);

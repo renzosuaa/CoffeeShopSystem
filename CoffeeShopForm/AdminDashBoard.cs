@@ -17,14 +17,5 @@ namespace CoffeeShopForm
             InitializeComponent();
         }
 
-        private void AdminDashBoard_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
     }
 }

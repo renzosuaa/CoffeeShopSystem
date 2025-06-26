@@ -55,7 +55,6 @@ namespace CoffeeShopForm
             flowLayoutPanel1.Size = new Size(143, 278);
             flowLayoutPanel1.TabIndex = 0;
             flowLayoutPanel1.TabStop = true;
-            flowLayoutPanel1.Paint += flowLayoutPanel1_Paint;
             // 
             // flowLayoutPanel2
             // 
@@ -124,12 +123,7 @@ namespace CoffeeShopForm
             btnLogOut.UseVisualStyleBackColor = false;
             btnLogOut.Click += btnLogOutEvent;
             // 
-            // btnViewOrders
-            // 
-            btnViewOrders.Location = new Point(0, 0);
-            btnViewOrders.Name = "btnViewOrders";
-            btnViewOrders.Size = new Size(75, 23);
-            btnViewOrders.TabIndex = 0;
+            InitializeUserPrivilage();
             // 
             // OrderingInterface
             // 
@@ -145,8 +139,11 @@ namespace CoffeeShopForm
             Controls.Add(flowLayoutPanel1);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             Name = "OrderingInterface";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "OrderingInterface";
             ResumeLayout(false);
+
+            
         }
 
         private int quantityResult = 0; // Variable to store the result
@@ -275,10 +272,7 @@ namespace CoffeeShopForm
                 btnViewOrders.Text = "View Orders";
                 btnViewOrders.Click += btnViewOrderEvent;
                 btnViewOrders.UseVisualStyleBackColor = false;
-            }
 
-            if (userID != 0)
-            {
                 Controls.Add(btnViewOrders);
             }
         }
@@ -367,7 +361,7 @@ namespace CoffeeShopForm
                 confirmForm.ShowInTaskbar = false;
                 confirmForm.BackColor = Color.FromArgb(44, 42, 56);
 
-                // Create a label for the message
+                
                 Label lblMessage = new Label
                 {
                     AutoSize = true,
@@ -377,6 +371,9 @@ namespace CoffeeShopForm
                     TextAlign = ContentAlignment.MiddleCenter,
                     ForeColor = Color.FromArgb(218, 216, 227)
                 };
+
+                confirmForm.Controls.Add(lblMessage);
+                confirmForm.ShowDialog();
             }
         }
 

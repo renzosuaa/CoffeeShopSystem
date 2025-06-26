@@ -75,6 +75,7 @@ namespace CoffeeShopForm
             if (orderProcess.GetAllOrderItems().Count != 0 && ConfirmMessage("Place Order"))
             {
                 CoffeeShop.coffeeShopprocess.AddSoldCount(orderProcess.GetAllOrderItems());
+                orderProcess.SaveCurrentOrder();
                 MessageBox.Show("Order Placed Successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // Reset the current form instead of creating a new instance
@@ -117,11 +118,6 @@ namespace CoffeeShopForm
 
                 orderProcess.AddOrder(orderItem);
             }
-        }
-
-        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

@@ -11,6 +11,5 @@ namespace CoffeeShopForm
             InitializeComponent();
         }
 
-        
     }
 }

@@ -41,7 +41,7 @@ namespace CoffeeShop_DataLayer
             string jsonText = File.ReadAllText(file_path);
 
             orders = JsonSerializer.Deserialize<List<Order>>(jsonText,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = false }
             );
         }
 

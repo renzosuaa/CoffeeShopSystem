@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SignInForm));
             lblSignIn = new Label();
             txtEmail = new TextBox();
             txtPassword = new TextBox();
@@ -40,6 +39,7 @@
             label1 = new Label();
             label4 = new Label();
             btnGuest = new Button();
+            label6 = new Label();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
@@ -48,23 +48,22 @@
             lblSignIn.AutoSize = true;
             lblSignIn.Font = new Font("Yu Gothic Medium", 24.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblSignIn.ForeColor = Color.FromArgb(218, 216, 227);
-            lblSignIn.Location = new Point(386, 68);
+            lblSignIn.Location = new Point(389, 72);
             lblSignIn.Margin = new Padding(4, 0, 4, 0);
             lblSignIn.Name = "lblSignIn";
-            lblSignIn.Size = new Size(130, 43);
+            lblSignIn.Size = new Size(131, 43);
             lblSignIn.TabIndex = 0;
-            lblSignIn.Text = "Sign in";
+            lblSignIn.Text = "Sign In";
             // 
             // txtEmail
             // 
             txtEmail.BackColor = Color.FromArgb(57, 53, 76);
-            txtEmail.BorderStyle = BorderStyle.FixedSingle;
             txtEmail.Font = new Font("Microsoft Sans Serif", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            txtEmail.ForeColor = Color.FromArgb(86, 82, 105);
-            txtEmail.Location = new Point(386, 136);
+            txtEmail.ForeColor = SystemColors.Control;
+            txtEmail.Location = new Point(389, 144);
             txtEmail.Margin = new Padding(4, 3, 4, 3);
             txtEmail.Name = "txtEmail";
-            txtEmail.PlaceholderText = "Email";
+            txtEmail.PlaceholderText = " Email";
             txtEmail.Size = new Size(274, 27);
             txtEmail.TabIndex = 3;
             // 
@@ -73,14 +72,15 @@
             txtPassword.Anchor = AnchorStyles.None;
             txtPassword.BackColor = Color.FromArgb(57, 53, 76);
             txtPassword.Font = new Font("Microsoft Sans Serif", 12.75F);
-            txtPassword.ForeColor = SystemColors.Window;
+            txtPassword.ForeColor = SystemColors.Control;
             txtPassword.HideSelection = false;
-            txtPassword.Location = new Point(386, 190);
+            txtPassword.Location = new Point(389, 198);
             txtPassword.Margin = new Padding(100, 10, 5, 5);
             txtPassword.Name = "txtPassword";
-            txtPassword.PlaceholderText = "Password";
+            txtPassword.PlaceholderText = " Password";
             txtPassword.Size = new Size(274, 27);
             txtPassword.TabIndex = 4;
+            txtPassword.UseSystemPasswordChar = true;
             // 
             // btnLogIn
             // 
@@ -88,7 +88,7 @@
             btnLogIn.FlatStyle = FlatStyle.Flat;
             btnLogIn.Font = new Font("Constantia", 12.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             btnLogIn.ForeColor = Color.FromArgb(218, 216, 227);
-            btnLogIn.Location = new Point(428, 252);
+            btnLogIn.Location = new Point(431, 258);
             btnLogIn.Margin = new Padding(4, 3, 4, 3);
             btnLogIn.Name = "btnLogIn";
             btnLogIn.Size = new Size(178, 33);
@@ -103,7 +103,7 @@
             btnRegister.FlatStyle = FlatStyle.Flat;
             btnRegister.Font = new Font("Constantia", 9F, FontStyle.Underline, GraphicsUnit.Point, 0);
             btnRegister.ForeColor = Color.FromArgb(218, 216, 227);
-            btnRegister.Location = new Point(550, 300);
+            btnRegister.Location = new Point(553, 306);
             btnRegister.Margin = new Padding(0);
             btnRegister.Name = "btnRegister";
             btnRegister.Size = new Size(60, 23);
@@ -134,14 +134,14 @@
             // 
             // panel1
             // 
-            panel1.BackgroundImage = (Image)resources.GetObject("panel1.BackgroundImage");
+            panel1.BackgroundImage = Properties.Resources.intro1;
             panel1.BackgroundImageLayout = ImageLayout.Stretch;
             panel1.Controls.Add(label3);
             panel1.Controls.Add(label2);
-            panel1.Location = new Point(8, 9);
+            panel1.Location = new Point(13, 17);
             panel1.Margin = new Padding(4, 3, 4, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(313, 435);
+            panel1.Size = new Size(351, 418);
             panel1.TabIndex = 7;
             // 
             // label1
@@ -149,7 +149,7 @@
             label1.AutoSize = true;
             label1.Font = new Font("Constantia", 9F);
             label1.ForeColor = Color.FromArgb(218, 216, 227);
-            label1.Location = new Point(428, 304);
+            label1.Location = new Point(431, 310);
             label1.Name = "label1";
             label1.Size = new Size(129, 14);
             label1.TabIndex = 8;
@@ -159,7 +159,7 @@
             // 
             label4.AutoSize = true;
             label4.ForeColor = Color.FromArgb(218, 216, 227);
-            label4.Location = new Point(428, 323);
+            label4.Location = new Point(431, 329);
             label4.Name = "label4";
             label4.Size = new Size(192, 15);
             label4.TabIndex = 9;
@@ -171,7 +171,7 @@
             btnGuest.FlatStyle = FlatStyle.Flat;
             btnGuest.Font = new Font("Constantia", 9F, FontStyle.Underline, GraphicsUnit.Point, 0);
             btnGuest.ForeColor = Color.DarkGray;
-            btnGuest.Location = new Point(464, 342);
+            btnGuest.Location = new Point(467, 348);
             btnGuest.Margin = new Padding(0);
             btnGuest.Name = "btnGuest";
             btnGuest.Size = new Size(114, 23);
@@ -180,12 +180,24 @@
             btnGuest.UseVisualStyleBackColor = true;
             btnGuest.Click += btnGuestEvent;
             // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Segoe UI", 9F, FontStyle.Italic, GraphicsUnit.Point, 0);
+            label6.ForeColor = Color.FromArgb(224, 224, 224);
+            label6.Location = new Point(420, 420);
+            label6.Name = "label6";
+            label6.Size = new Size(213, 15);
+            label6.TabIndex = 12;
+            label6.Text = "\"Fueling Moments, One Cup at a Time.\"";
+            // 
             // SignInForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(44, 42, 56);
             ClientSize = new Size(691, 456);
+            Controls.Add(label6);
             Controls.Add(btnGuest);
             Controls.Add(label4);
             Controls.Add(label1);
@@ -197,9 +209,11 @@
             Controls.Add(lblSignIn);
             ForeColor = SystemColors.ControlText;
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            ImeMode = ImeMode.On;
             Margin = new Padding(4, 3, 4, 3);
             Name = "SignInForm";
-            Text = "=";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = " ";
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ResumeLayout(false);
@@ -265,5 +279,6 @@
         private Label label1;
         private Label label4;
         private Button btnGuest;
+        private Label label6;
     }
 }
