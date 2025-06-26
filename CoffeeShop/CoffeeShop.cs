@@ -39,7 +39,7 @@ namespace CoffeeShopSystem
                 }
                 else if (input == 2)
                 {
-                    new OrderingInterface().Order();
+                    new OrderingInterface(0).Order();
                 }
                 else
                 {
@@ -77,7 +77,6 @@ namespace CoffeeShopSystem
                 Console.WriteLine("Success: Registration Complete");
                 StartUp();
             }
-
         }
 
         static void Login()
@@ -95,7 +94,8 @@ namespace CoffeeShopSystem
             }
             else if (UserProcess.ValidateUser(emailInput, userPasswordInput))
             {
-                new OrderingInterface().Order();
+                int userID = UserProcess.GetUserID(emailInput);
+                new OrderingInterface(userID).Order();
             }
             else
             {
@@ -147,7 +147,6 @@ namespace CoffeeShopSystem
                 AdminAccess();
             }
             return;
-
         }
 
         static void PrintPerItemTypeSummary(string itemType)

@@ -1,14 +1,22 @@
 [
   {
-    "userID": 1,
+    "userID": 2,
     "email": "admin1",
     "password": "admin123",
     "type": "Admin"
   },
   {
-    "userID": 2,
+    "userID": 1,
     "email": "user1@gmail.com",
     "password": "user123",
     "type": "Customer"
   }
+  {
+    "userID": 0,
+    "email": "GUEST",
+    "password": "GUEST",
+    "type": "Customer"
+  }
+
+
 ]

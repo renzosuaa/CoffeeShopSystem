@@ -30,6 +30,13 @@ namespace CoffeeShopAPI.Controllers
             return userProcess.ValidateUser(email, password);
         }
 
+        [HttpGet("GetUserID")]
+        public int GetUserID(string email)
+        {
+            return userProcess.GetUserID(email);
+        }
+
+
         [HttpPost("RegisterUser")]
         public void RegisterUser(string email, string password)
         {

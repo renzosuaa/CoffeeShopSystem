@@ -20,7 +20,7 @@ namespace CoffeeShopSystem_BusinessLogic
             itemList = new List<Item>(DataProcess.GetItems());
         }
 
-        //returns all the existing items
+        
         public  List<Item> GetAllItems()
         {
             return itemList;
@@ -73,8 +73,6 @@ namespace CoffeeShopSystem_BusinessLogic
         {
             return Convert.ToDouble(GetUserInput());
         }
-
-
 
         // use for admin access stuffs
         public bool DeleteItem(string itemName)

@@ -8,8 +8,8 @@ namespace CoffeeShopAPI.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-
-        CoffeeShopSystem_BusinessLogic.OrderProcess orderProcess = new CoffeeShopSystem_BusinessLogic.OrderProcess();
+       
+        CoffeeShopSystem_BusinessLogic.OrderProcess orderProcess = new CoffeeShopSystem_BusinessLogic.OrderProcess(0);
 
         [HttpGet]
         public List<Item> GetAllOrderItems ()
@@ -53,6 +53,22 @@ namespace CoffeeShopAPI.Controllers
         {
             orderProcess.AddOrder(item);
         }
+
+
+        [HttpPost("SaveCurrentOrder")]
+        public void SaveCurrentOrder()
+        {
+            orderProcess.SaveCurrentOrder();
+        }
+
+
+        [HttpGet("GetUserOrders")]
+        public void GEtUserOrders(Item item)
+        {
+            orderProcess.GetUserOrders();
+        }
+
+
 
     }
 }

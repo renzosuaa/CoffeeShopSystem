@@ -1,13 +1,13 @@
-﻿using System;
+﻿using CoffeeShopCommon;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CoffeeShopCommon
+public class Order
 {
-    public class Order
-    {
-        public List<Item> items = new List<Item>();
-    }
+    public int orderID { get; set; }
+    public int userID { get; set; }
+    public List<Item> items { get; set; } = new List<Item>();
 }

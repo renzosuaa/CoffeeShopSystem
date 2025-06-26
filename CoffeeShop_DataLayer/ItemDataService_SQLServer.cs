@@ -34,8 +34,6 @@ namespace CoffeeShop_DataLayer
             SqlDataReader reader = selectCommand.ExecuteReader();
             while (reader.Read())
             {
-                //Serealize data from database to Item object
-
                 Item item = new Item();
                 item.itemID = Convert.ToInt32(reader["itemID"]);
                 item.name = reader["name"].ToString().Trim(); //fix later why it doesn't work without trim

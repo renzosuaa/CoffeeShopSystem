@@ -1,0 +1,8 @@
+[
+    {
+        "orderID": 1,
+        "userID" : 2,
+        "items" : 
+        [{"itemID":1,"name":"Milktea","cost":49.9,"soldCount":0,"type":"Beverage"},{"itemID":2,"name":"Ice Coffee","cost":59.9,"soldCount":4,"type":"Beverage"},{"itemID":3,"name":"Taco","cost":45.5,"soldCount":0,"type":"Snack"},{"itemID":4,"name":"Pizza","cost":75.9,"soldCount":1,"type":"Snack"}]
+    }
+]

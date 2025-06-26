@@ -42,14 +42,16 @@ namespace CoffeeShop_DataLayer
 
             for (int i = 0; i < items.Count; i++)
             {
-                lines[i] = $"{items[i].name}|{items[i].cost}|{items[i].type}|{items[i].soldCount}";
+                lines[i] = $"{items[i].itemID}|{items[i].name}|{items[i].cost}|{items[i].type}|{items[i].soldCount}";
             }
+          
 
-            File.WriteAllLines(file_path, lines);
+            File.WriteAllLines(file_path, lines); 
         }
 
         private void GetDataFromFile()
         {
+            items.Clear();
             var lines = File.ReadAllLines(file_path);
 
             foreach (var line in lines)
@@ -69,7 +71,7 @@ namespace CoffeeShop_DataLayer
         public void AddItem(string itemName, double itemCost, string itemType)
         {
             items.Add(new Item(IDCounter+1,itemName, itemCost, itemType));
-            var newLine = $"{itemName}|{itemCost}|{itemType}|0";
+            var newLine = $"{IDCounter + 1}|{itemName}|{itemCost}|{itemType}|0";
             File.AppendAllText(file_path, newLine);
         }
 

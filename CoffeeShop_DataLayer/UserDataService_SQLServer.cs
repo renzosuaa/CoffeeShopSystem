@@ -43,6 +43,18 @@ namespace CoffeeShop_DataLayer
             return false;
         }
 
+        public int GetUserID(string email)
+        {
+            string selectStatement = "SELECT userID FROM Users WHERE (email = '" + email + "')";
+            SqlCommand selectCommand = new SqlCommand(selectStatement, sqlConnection);
+            sqlConnection.Open();
+            SqlDataReader reader = selectCommand.ExecuteReader();
+            sqlConnection.Close();
+            return reader.GetInt32(0);
+            
+            
+        }
+
         public bool ValidateUser(string email, string password)
         {
             string selectStatement = "SELECT email FROM Users WHERE email = '" + email + "' AND password = '" + password +"'";

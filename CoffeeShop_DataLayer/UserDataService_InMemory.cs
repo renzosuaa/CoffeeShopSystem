@@ -19,6 +19,7 @@ namespace CoffeeShop_DataLayer
             InitializeIDCounter();
         }
 
+
         public bool ValidatePassword(string password, string password2)
         {
             return password == password2;
@@ -44,6 +45,19 @@ namespace CoffeeShop_DataLayer
             }
 
             return false;
+        }
+
+        public int GetUserID(string email)
+        {
+            foreach (User user in userList)
+            {
+                if (user.email == email)
+                {
+                    return user.userID;
+                }
+
+            }
+            return -1;
         }
 
         public void RegisterUser(string email, string password)

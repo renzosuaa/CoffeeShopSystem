@@ -32,5 +32,10 @@ namespace CoffeeShopSystem_BusinessLogic
             return userDataService.ValidateUser(email, password);
         }
 
+        public int GetUserID(string email)
+        {
+            return userDataService.GetUserID(email);
+        }
+
     }
 }

@@ -9,17 +9,21 @@ using CoffeeShop_DataLayer;
 
 namespace CoffeeShopSystem_BusinessLogic
 {
-
     //per order action
-
     public class OrderProcess
     {
-        Order_DataService Data_Service = new Order_DataService();
-        
+        Order_DataService_InMemory Data_Service;
+        int userID = 0;
+
+        public OrderProcess(int userID)
+        {
+            Data_Service = new Order_DataService_InMemory(userID);
+            this.userID = userID;
+        }
+
         public void AddOrder(Item item)
         {
             Data_Service.AddOrder(item);
-            
         }
 
         public List<Item> GetAllOrderItems()
@@ -32,7 +36,18 @@ namespace CoffeeShopSystem_BusinessLogic
             Data_Service.ClearOrder();
         }
 
-         List<string> GetOrderItemTypes()
+        public void SaveCurrentOrder()
+        {
+            if (GetAllOrderItems().Count > 0) 
+            {
+                Data_Service.AddOrderToList(Data_Service.GetCurrentOrder()); 
+            }
+            else
+            {
+            }
+        }
+
+        List<string> GetOrderItemTypes()
         {
             HashSet<string> types = new HashSet<string>();
             foreach (Item item in GetAllOrderItems())
@@ -56,9 +71,7 @@ namespace CoffeeShopSystem_BusinessLogic
         }
 
         // for building the receipt
-        // will be move to OrderingINterface
-
-
+        // will be move to OrderingInterface
         string GetSummaryItem(Item item)
         {
             double total = item.soldCount * item.cost;
@@ -96,7 +109,6 @@ namespace CoffeeShopSystem_BusinessLogic
             summary += "----------------\n";
             foreach (Item order in GetAllOrderItems())
             {
-
                 if (order.type == itemType)
                 {
                     summary += GetSummaryItem(order);
@@ -104,6 +116,36 @@ namespace CoffeeShopSystem_BusinessLogic
                 }
             }
             return summary;
+        }
+
+        public string GetUserOrders()
+        {
+            string orders = "";
+            List<Order> userOrders = Data_Service.GetOrders(userID);
+
+            if (userOrders.Count == 0)
+            {
+                return "No previous orders found for this user.";
+            }
+
+            foreach (Order order in userOrders)
+            {
+                orders += "Order ID: " + order.orderID + "\n";
+
+                if (order.items != null && order.items.Count > 0)
+                {
+                    foreach (Item item in order.items)
+                    {
+                        orders += GetSummaryItem(item) + "\n";
+                    }
+                }
+                else
+                {
+                    orders += "No items in this order.\n";
+                }
+                orders += "-------------------\n";
+            }
+            return orders;
         }
     }
 }

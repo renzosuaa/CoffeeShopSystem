@@ -12,6 +12,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CoffeeShopCommon\CoffeeShopCommon.csproj" />
+    <ProjectReference Include="..\CoffeeShop\CoffeeShopSystem.csproj" />
+    <ProjectReference Include="..\CoffeeShop_BusinessLogic\CoffeeShopSystem_BusinessLogic.csproj" />
+    <ProjectReference Include="..\CoffeeShop_DataLayer\CoffeeShop_DataLayer.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="CoffeeShopCommon">
       <HintPath>..\..\CoffeeShopSystem\CoffeeShop\bin\Debug\net8.0\CoffeeShopCommon.dll</HintPath>
     </Reference>

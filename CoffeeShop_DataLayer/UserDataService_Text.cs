@@ -1,4 +1,5 @@
 ﻿using CoffeeShopCommon;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,8 +41,21 @@ namespace CoffeeShop_DataLayer
         public void RegisterUser(string email, string password)
         {
             userList.Add(new User(IDCounter+1,email, password, "Customer"));
-            var newLine = $"{email}|{password}|Customer";
+            var newLine = $"{IDCounter + 1}|{email}|{password}|Customer";
             File.AppendAllText(file_path, newLine);
+        }
+
+        public int GetUserID(string email)
+        {
+            foreach (User user in userList)
+            {
+                if (user.email == email)
+                {
+                    return user.userID;
+                }
+
+            }
+            return -1;
         }
 
         public bool ValidateAdmin(string email, string password)

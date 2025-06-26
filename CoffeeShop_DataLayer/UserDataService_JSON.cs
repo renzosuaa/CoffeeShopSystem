@@ -14,7 +14,7 @@ namespace CoffeeShop_DataLayer
 
         List<User> userList = new List<User>();
         string file_path = "users.json";
-        int IDCounter = 0;
+        
 
 
         public UserDataService_JSON()
@@ -37,6 +37,19 @@ namespace CoffeeShop_DataLayer
             { WriteIndented = false });
 
             File.WriteAllText(file_path, jsonString);
+        }
+
+        public int GetUserID(string email)
+        {
+            foreach (User user in userList)
+            {
+                if (user.email == email)
+                {
+                    return user.userID;
+                }
+
+            }
+            return -1;
         }
 
 
@@ -87,6 +100,8 @@ namespace CoffeeShop_DataLayer
             return password == password2;
         }
 
+
+        int IDCounter = 0;
         private void InitializeIDCounter()
         {
             foreach (var user in userList)
