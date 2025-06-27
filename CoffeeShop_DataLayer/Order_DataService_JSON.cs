@@ -11,7 +11,7 @@ namespace CoffeeShop_DataLayer
 {
     public class Order_DataService_JSON
     {
-        public Order order = new Order(); // Made public so OrderProcess can access it
+        public Order order = new Order(); 
         List<Order> orders = new List<Order>();
         string file_path = "orders.json";
         int IDCounter = 0;
@@ -19,14 +19,14 @@ namespace CoffeeShop_DataLayer
         public Order_DataService_JSON(int userID)
         {
             ReadJsonDataFromFile();
-            InitializeIDCounter(); // Call this AFTER reading data
+            InitializeIDCounter(); 
             order.orderID = IDCounter + 1;
             order.userID = userID;
         }
 
         private void InitializeIDCounter()
         {
-            IDCounter = 0; // Reset counter
+            IDCounter = 0;
             foreach (var order in orders)
             {
                 if (order.orderID > IDCounter)
@@ -36,13 +36,27 @@ namespace CoffeeShop_DataLayer
             }
         }
 
-        private void ReadJsonDataFromFile()
+        private bool ReadJsonDataFromFile()
         {
-            string jsonText = File.ReadAllText(file_path);
-
-            orders = JsonSerializer.Deserialize<List<Order>>(jsonText,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = false }
-            );
+            try
+            {
+                if (File.Exists(file_path))
+                {
+                    string jsonText = File.ReadAllText(file_path);
+                    orders = JsonSerializer.Deserialize<List<Order>>(jsonText,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
+                    );
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         private bool UpdateFile()
@@ -50,7 +64,7 @@ namespace CoffeeShop_DataLayer
             try
             {
                 string jsonString = JsonSerializer.Serialize(orders, new JsonSerializerOptions
-                { WriteIndented = true }); 
+                { WriteIndented = true });
                 File.WriteAllText(file_path, jsonString);
                 return true;
             }
@@ -113,7 +127,7 @@ namespace CoffeeShop_DataLayer
         public void AddOrderToList(Order order)
         {
             orders.Add(order);
-            UpdateFile(); // Save to file after adding
+            UpdateFile(); 
         }
 
         public List<Order> GetOrders(int _userID)
@@ -129,6 +143,22 @@ namespace CoffeeShop_DataLayer
                 }
             }
             return userOrders;
+        }
+
+
+
+        public void AddDummyOrder()
+        {
+            orders.Add(new Order
+            {
+                orderID = 1,
+                userID = 1,
+                items = new List<Item>
+                {
+                    new Item { name = "Coffee", cost = 2.5, type = "Beverage", soldCount = 1 },
+                    new Item { name = "Muffin", cost = 1.5, type = "Food", soldCount = 2 }
+                }
+            });
         }
     }
 }

@@ -12,12 +12,12 @@ namespace CoffeeShopSystem_BusinessLogic
     //per order action
     public class OrderProcess
     {
-        Order_DataService_InMemory Data_Service;
+        Order_DataService_JSON Data_Service;
         int userID = 0;
 
         public OrderProcess(int userID)
         {
-            Data_Service = new Order_DataService_InMemory(userID);
+            Data_Service = new Order_DataService_JSON(userID);
             this.userID = userID;
         }
 
@@ -36,14 +36,16 @@ namespace CoffeeShopSystem_BusinessLogic
             Data_Service.ClearOrder();
         }
 
-        public void SaveCurrentOrder()
+        public bool SaveCurrentOrder()
         {
             if (GetAllOrderItems().Count > 0) 
             {
-                Data_Service.AddOrderToList(Data_Service.GetCurrentOrder()); 
+                Data_Service.AddOrderToList(Data_Service.GetCurrentOrder());
+                return true;
             }
             else
             {
+                return false;
             }
         }
 
@@ -132,7 +134,7 @@ namespace CoffeeShopSystem_BusinessLogic
             {
                 orders += "Order ID: " + order.orderID + "\n";
 
-                if (order.items != null && order.items.Count > 0)
+                if (order.items != null)
                 {
                     foreach (Item item in order.items)
                     {

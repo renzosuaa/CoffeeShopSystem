@@ -11,7 +11,7 @@ namespace CoffeeShop_DataLayer
     {
         Order order = new Order();
 
-        List<Order> orders = new List<Order>();
+        static List<Order> orders = new List<Order>();
 
         public Order_DataService_InMemory(int userID)
         {
@@ -22,6 +22,7 @@ namespace CoffeeShop_DataLayer
         int IDCounter = 0;
         private void InitializeIDCounter()
         {
+            AddDummyOrder();
             foreach (var order in orders)
             {
                 if (order.orderID > IDCounter)
@@ -102,6 +103,20 @@ namespace CoffeeShop_DataLayer
         public Order GetCurrentOrder()
         {
             return order;
+        }
+
+        public void AddDummyOrder()
+        {
+            orders.Add(new Order
+            {
+                orderID = 1,
+                userID = 1,
+                items = new List<Item>
+                {
+                    new Item { name = "Coffee", cost = 2.5, type = "Beverage", soldCount = 1 },
+                    new Item { name = "Muffin", cost = 1.5, type = "Food", soldCount = 2 }
+                }
+            });
         }
     }
 }
