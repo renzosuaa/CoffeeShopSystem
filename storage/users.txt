@@ -1,3 +1,2 @@
 1|admin1|admin123|Admin
 2|user1@gmail.com|user123|Customer
-0|Guest|Guest|Customer

@@ -25,7 +25,7 @@ namespace CoffeeShop_DataLayer
 
         List<Item> InitializeData()
         {
-            string selectStatement = "SELECT name, cost, soldCount, type FROM items";
+            string selectStatement = "SELECT itemID,name, cost, soldCount, type FROM items";
 
             List<Item> _items = new List<Item>();
             SqlCommand selectCommand = new SqlCommand(selectStatement, sqlConnection);
