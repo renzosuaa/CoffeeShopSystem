@@ -24,7 +24,7 @@ namespace CoffeeShopSystem_BusinessLogic
             {
                 using var email = new MimeMessage();
                 email.From.Add(new MailboxAddress("Coffee++", "no-reply@demomailtrap.co"));
-                email.To.Add(new MailboxAddress("", "renzosua111@gmail.com"));
+                email.To.Add(new MailboxAddress("", request.email));
                 var builder = new BodyBuilder();
 
                 if (request.type == "account_creation")
