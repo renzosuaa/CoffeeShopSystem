@@ -11,7 +11,7 @@ namespace CoffeeShopSystem_BusinessLogic
     public class UserProcess
     {
         UserDataService_JSON userDataService = new UserDataService_JSON();
-
+        MailProcess MailProcess = new MailProcess();
         public bool ValidatePassword(string password, string password2)
         {
             return userDataService.ValidatePassword(password, password2);
@@ -25,6 +25,8 @@ namespace CoffeeShopSystem_BusinessLogic
         public void RegisterUser(string email, string password)
         {
             userDataService.RegisterUser(email, password);
+            MailRequest request = new MailRequest(email, "account_creation");
+            MailProcess.SendEmail(request);
         }
 
         public bool ValidateUser(string email,string password)

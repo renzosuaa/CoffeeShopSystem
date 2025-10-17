@@ -17,11 +17,13 @@ namespace CoffeeShopForm
     {
 
         int userID;
+        string email;
         OrderProcess orderProcess;
 
-        public OrderingInterface(int userID)
+        public OrderingInterface(int userID,string email)
         {
             this.userID = userID;
+            this.email = email;
             orderProcess = new OrderProcess(userID);
             InitializeComponent();
             InitializeOrderType();
@@ -77,7 +79,8 @@ namespace CoffeeShopForm
                 CoffeeShop.coffeeShopprocess.AddSoldCount(orderProcess.GetAllOrderItems());
                 orderProcess.SaveCurrentOrder();
                 MessageBox.Show("Order Placed Successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                MailRequest request = new MailRequest(email,"receipt",orderProcess.PrintReceipt());
+                new MailProcess().SendEmail(request);
                 // Reset the current form instead of creating a new instance
                 flowLayoutPanel1.Controls.Clear();
                 flowLayoutPanel2.Controls.Clear();

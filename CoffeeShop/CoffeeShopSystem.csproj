@@ -8,6 +8,10 @@
 	  </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="4.14.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\CoffeeShopCommon\CoffeeShopCommon.csproj" />
     <ProjectReference Include="..\CoffeeShop_BusinessLogic\CoffeeShopSystem_BusinessLogic.csproj" />
   </ItemGroup>	  

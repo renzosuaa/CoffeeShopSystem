@@ -240,7 +240,7 @@
             else if (CoffeeShop.userProcess.ValidateUser(email, password))
             {
                 this.Hide();
-                new OrderingInterface(CoffeeShop.userProcess.GetUserID(email)).ShowDialog();
+                new OrderingInterface(CoffeeShop.userProcess.GetUserID(email),email).ShowDialog();
                 this.Close();
             }
             else
@@ -261,7 +261,7 @@
         protected void btnGuestEvent(object sender, EventArgs e)
         {
             this.Hide();
-            new OrderingInterface(0).ShowDialog();
+            new OrderingInterface(0,"non-email").ShowDialog();
             this.Close();
         }
 
