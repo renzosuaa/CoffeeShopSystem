@@ -10,8 +10,13 @@ namespace CoffeeShopAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        CoffeeShopSystem_BusinessLogic.UserProcess userProcess = new CoffeeShopSystem_BusinessLogic.UserProcess();
+        CoffeeShopSystem_BusinessLogic.UserProcess userProcess;
 
+        public UserController(CoffeeShopSystem_BusinessLogic.UserProcess userProcess)
+        {
+            this.userProcess = userProcess;
+        }
+        
         [HttpGet("ValidatePassword")]
         public bool ValidatePassword(string password, string password2)
         {

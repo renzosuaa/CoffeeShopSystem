@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CoffeeShopCommon\CoffeeShopCommon.csproj" />
-    <ProjectReference Include="..\CoffeeShop\CoffeeShopSystem.csproj" />
+    
     <ProjectReference Include="..\CoffeeShop_BusinessLogic\CoffeeShopSystem_BusinessLogic.csproj" />
     <ProjectReference Include="..\CoffeeShop_DataLayer\CoffeeShop_DataLayer.csproj" />
   </ItemGroup>

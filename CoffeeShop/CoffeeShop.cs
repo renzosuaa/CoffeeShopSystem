@@ -6,265 +6,266 @@ namespace CoffeeShopSystem
 {
     internal class CoffeeShop
     {
-        internal static CoffeeShopProcess process = new CoffeeShopProcess();
-        internal static UserProcess UserProcess = new UserProcess();
-        static void Main(string[] args)
-        {
-            
-            StartUp(); 
-        }
+        //internal  CoffeeShopProcess process;
+        //internal static UserProcess UserProcess;
 
-        static void StartUp()
-        {
-            do
-            {
-                Console.WriteLine(" ------------------------------------------");
-                Console.WriteLine("\tWelcome To Caffeine++");
-                Console.WriteLine(" ------------------------------------------\n");
-                Console.WriteLine("""
-                [0] Login
-                [1] Register
-                [2] Continue As Guest
-                """);
-                Console.WriteLine(" ------------------------------------------");
-                int input = CoffeeShopProcess.GetUserInputInt();
+        //CoffeeShop(CoffeeShopProcess process, UserProcess userProcess)
+        //{
+        //    this.process = process;
+        //    UserProcess = userProcess;
+        //}
 
-                if (input == 0)
-                {
-                    Login();
-                }
-                else if (input == 1)
-                {
-                    Register();
-                }
-                else if (input == 2)
-                {
-                    new OrderingInterface(0).Order();
-                }
-                else
-                {
-                    Console.WriteLine("Error: Invalid Output");
-                    Console.WriteLine(" ------------------------------------------");
-                }
+        //static void StartUp()
+        //{
+        //    do
+        //    {
+        //        Console.WriteLine(" ------------------------------------------");
+        //        Console.WriteLine("\tWelcome To Caffeine++");
+        //        Console.WriteLine(" ------------------------------------------\n");
+        //        Console.WriteLine("""
+        //        [0] Login
+        //        [1] Register
+        //        [2] Continue As Guest
+        //        """);
+        //        Console.WriteLine(" ------------------------------------------");
+        //        int input = CoffeeShopProcess.GetUserInputInt();
 
-                if (IsDone("Program"))
-                {
-                    Environment.Exit(0);
-                }
-            } while (true);
-        }
+        //        if (input == 0)
+        //        {
+        //            Login();
+        //        }
+        //        else if (input == 1)
+        //        {
+        //            Register();
+        //        }
+        //        else if (input == 2)
+        //        {
+        //            new OrderingInterface(0).Order();
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("Error: Invalid Output");
+        //            Console.WriteLine(" ------------------------------------------");
+        //        }
 
-        static void Register()
-        {
-            Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine("Enter email:");
-            string emailInput = CoffeeShopProcess.GetUserInput();
-            Console.WriteLine("Enter Password:");
-            string userPassword = CoffeeShopProcess.GetUserInput();
-            Console.WriteLine("Confirm Password:");
-            string userConfirmPassword = CoffeeShopProcess.GetUserInput();
-            Console.WriteLine(" ------------------------------------------");
+        //        if (IsDone("Program"))
+        //        {
+        //            Environment.Exit(0);
+        //        }
+        //    } while (true);
+        //}
 
-            if (!UserProcess.ValidatePassword(userPassword, userConfirmPassword))
-            {
-                Console.WriteLine("Error: Password Don't Match!");
-                Console.WriteLine(" ------------------------------------------");
-                Register();
-            }
-            else
-            {
-                UserProcess.RegisterUser(emailInput, userPassword);
-                Console.WriteLine("Success: Registration Complete");
-                StartUp();
-            }
-        }
+        //static void Register()
+        //{
+        //    Console.WriteLine(" ------------------------------------------");
+        //    Console.WriteLine("Enter email:");
+        //    string emailInput = CoffeeShopProcess.GetUserInput();
+        //    Console.WriteLine("Enter Password:");
+        //    string userPassword = CoffeeShopProcess.GetUserInput();
+        //    Console.WriteLine("Confirm Password:");
+        //    string userConfirmPassword = CoffeeShopProcess.GetUserInput();
+        //    Console.WriteLine(" ------------------------------------------");
 
-        static void Login()
-        {
-            Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine(" Enter Email: ");
-            string emailInput = CoffeeShopProcess.GetUserInput();
-            Console.WriteLine(" Enter Password: ");
-            string userPasswordInput = CoffeeShopProcess.GetUserInput();
-            Console.WriteLine(" ------------------------------------------");
+        //    if (!UserProcess.ValidatePassword(userPassword, userConfirmPassword))
+        //    {
+        //        Console.WriteLine("Error: Password Don't Match!");
+        //        Console.WriteLine(" ------------------------------------------");
+        //        Register();
+        //    }
+        //    else
+        //    {
+        //        UserProcess.RegisterUser(emailInput, userPassword);
+        //        Console.WriteLine("Success: Registration Complete");
+        //        StartUp();
+        //    }
+        //}
 
-            if (UserProcess.ValidateAdmin(emailInput, userPasswordInput))
-            {
-                AdminAccess();
-            }
-            else if (UserProcess.ValidateUser(emailInput, userPasswordInput))
-            {
-                int userID = UserProcess.GetUserID(emailInput);
-                new OrderingInterface(userID).Order();
-            }
-            else
-            {
-                Console.WriteLine(" ------------------------------------------");
-                Console.WriteLine("Error: Wrong Email or Password!");
-                Console.WriteLine(" ------------------------------------------");
-            }
+        //static void Login()
+        //{
+        //    Console.WriteLine(" ------------------------------------------");
+        //    Console.WriteLine(" Enter Email: ");
+        //    string emailInput = CoffeeShopProcess.GetUserInput();
+        //    Console.WriteLine(" Enter Password: ");
+        //    string userPasswordInput = CoffeeShopProcess.GetUserInput();
+        //    Console.WriteLine(" ------------------------------------------");
 
-        }
+        //    if (UserProcess.ValidateAdmin(emailInput, userPasswordInput))
+        //    {
+        //        AdminAccess();
+        //    }
+        //    else if (UserProcess.ValidateUser(emailInput, userPasswordInput))
+        //    {
+        //        int userID = UserProcess.GetUserID(emailInput);
+        //        new OrderingInterface(userID,emailInput).Order();
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine(" ------------------------------------------");
+        //        Console.WriteLine("Error: Wrong Email or Password!");
+        //        Console.WriteLine(" ------------------------------------------");
+        //    }
 
-        static void AdminAccess()
-        {
-            Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine("""
-                [0] View Sold Summary
-                [1] Add Item
-                [2] Delete Item
-                """);
-            /*
-                [3] Hide Item
-                [4] Unhide Item
-                [5] Add Item Type
-                [6] Delete Item Type
-                [7] Hide Item Type
-                [8] Unhide Item Type
-             */
-            int choice = CoffeeShopProcess.GetUserInputInt();
+        //}
 
-            switch (choice)
-            {
-                case 0:
-                    ViewSoldSummary();
-                    break;
-                case 1:
-                    AddItem();
-                    break;
-                case 2:
-                    DeleteItem();
-                    break;
-                default:
-                    Console.WriteLine(" ------------------------------------------");
-                    Console.WriteLine("Error: Invalid Input!");
-                    AdminAccess();
-                    break;
-            }
+        //static void AdminAccess()
+        //{
+        //    Console.WriteLine(" ------------------------------------------");
+        //    Console.WriteLine("""
+        //        [0] View Sold Summary
+        //        [1] Add Item
+        //        [2] Delete Item
+        //        """);
+        //    /*
+        //        [3] Hide Item
+        //        [4] Unhide Item
+        //        [5] Add Item Type
+        //        [6] Delete Item Type
+        //        [7] Hide Item Type
+        //        [8] Unhide Item Type
+        //     */
+        //    int choice = CoffeeShopProcess.GetUserInputInt();
 
-            if (!IsDone("Admin Access"))
-            {
-                AdminAccess();
-            }
-            return;
-        }
+        //    switch (choice)
+        //    {
+        //        case 0:
+        //            ViewSoldSummary();
+        //            break;
+        //        case 1:
+        //            AddItem();
+        //            break;
+        //        case 2:
+        //            DeleteItem();
+        //            break;
+        //        default:
+        //            Console.WriteLine(" ------------------------------------------");
+        //            Console.WriteLine("Error: Invalid Input!");
+        //            AdminAccess();
+        //            break;
+        //    }
 
-        static void PrintPerItemTypeSummary(string itemType)
-        {
-            Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine(itemType + " \t\t" + "COST" + "\t" + "Sold  Count" + "\t" + "Total");
-            Console.WriteLine(" ------------------------------------------\n");
-            PrintPerItemSummary(process.GetItemsPerType(itemType));
-            Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine("Total: " + process.GetTotalPerType(itemType));
-            Console.WriteLine(" ------------------------------------------\n\n");
-        }
+        //    if (!IsDone("Admin Access"))
+        //    {
+        //        AdminAccess();
+        //    }
+        //    return;
+        //}
 
-        static void PrintPerItemSummary(List<Item> _items)
-        {
-            foreach (Item j in _items)
-            {
-                double totalSoldPerDrink = j.soldCount * j.cost;
-                Console.WriteLine(j.name + " \t\t" + j.cost + "\t" + j.soldCount + "\t" + totalSoldPerDrink);
-            }
-        }
+        //static void PrintPerItemTypeSummary(string itemType)
+        //{
+        //    Console.WriteLine(" ------------------------------------------");
+        //    Console.WriteLine(itemType + " \t\t" + "COST" + "\t" + "Sold  Count" + "\t" + "Total");
+        //    Console.WriteLine(" ------------------------------------------\n");
+        //    PrintPerItemSummary(process.GetItemsPerType(itemType));
+        //    Console.WriteLine(" ------------------------------------------");
+        //    Console.WriteLine("Total: " + process.GetTotalPerType(itemType));
+        //    Console.WriteLine(" ------------------------------------------\n\n");
+        //}
 
-        internal static Boolean IsDone(string ActionType)
-        {
-            Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine("Do You Want To Continue With " + ActionType + " ?");
-            Console.WriteLine("[0] Yes  \t [1] No");
-            Console.WriteLine("");
-            int choice = CoffeeShopProcess.GetUserInputInt();
-            Console.WriteLine(" ------------------------------------------");
+        //static void PrintPerItemSummary(List<Item> _items)
+        //{
+        //    foreach (Item j in _items)
+        //    {
+        //        double totalSoldPerDrink = j.soldCount * j.cost;
+        //        Console.WriteLine(j.name + " \t\t" + j.cost + "\t" + j.soldCount + "\t" + totalSoldPerDrink);
+        //    }
+        //}
 
-            if (choice == 0)
-            {
-                return false;
-            }
-            else if (choice == 1)
-            {
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("Invalid Input!");
-                IsDone(ActionType);
-            }
-            return false;
-        }
+        //internal static Boolean IsDone(string ActionType)
+        //{
+        //    Console.WriteLine(" ------------------------------------------");
+        //    Console.WriteLine("Do You Want To Continue With " + ActionType + " ?");
+        //    Console.WriteLine("[0] Yes  \t [1] No");
+        //    Console.WriteLine("");
+        //    int choice = CoffeeShopProcess.GetUserInputInt();
+        //    Console.WriteLine(" ------------------------------------------");
 
-        static void AddItem()
-        {
-            Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine("Enter Item Type: ");
-            string itemType = CoffeeShopProcess.GetUserInput();
-            Console.WriteLine("Enter Item Name: ");
-            string itemName = CoffeeShopProcess.GetUserInput();
-            Console.WriteLine("Enter " + itemType + "Cost: ");
-            double itemCost = CoffeeShopProcess.GetUserInputDouble();
-            process.AddItem(itemName, itemCost, itemType);
-            Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine(itemName + " is ADDED successfully");
-            Console.WriteLine(" ------------------------------------------");
-        }
+        //    if (choice == 0)
+        //    {
+        //        return false;
+        //    }
+        //    else if (choice == 1)
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine("Invalid Input!");
+        //        IsDone(ActionType);
+        //    }
+        //    return false;
+        //}
 
-        static void DeleteItem()
-        {
-            Console.WriteLine(" ------------------------------------------");
-            Console.WriteLine("Enter Item Name: ");
-            string itemName = CoffeeShopProcess.GetUserInput();
+        //static void AddItem()
+        //{
+        //    Console.WriteLine(" ------------------------------------------");
+        //    Console.WriteLine("Enter Item Type: ");
+        //    string itemType = CoffeeShopProcess.GetUserInput();
+        //    Console.WriteLine("Enter Item Name: ");
+        //    string itemName = CoffeeShopProcess.GetUserInput();
+        //    Console.WriteLine("Enter " + itemType + "Cost: ");
+        //    double itemCost = CoffeeShopProcess.GetUserInputDouble();
+        //    process.AddItem(itemName, itemCost, itemType);
+        //    Console.WriteLine(" ------------------------------------------");
+        //    Console.WriteLine(itemName + " is ADDED successfully");
+        //    Console.WriteLine(" ------------------------------------------");
+        //}
 
-            if (process.DeleteItem(itemName))
-            {
-                Console.WriteLine(" ------------------------------------------");
-                Console.WriteLine(itemName + " is DELETED successfully");
-                Console.WriteLine(" ------------------------------------------");
-            }
-            else
-            {
-                Console.WriteLine(" ------------------------------------------");
-                Console.WriteLine(itemName + " does NOT EXIST");
-                Console.WriteLine(" ------------------------------------------");
-            }
-        }
-        static void ViewSoldSummary()
-        {
-            var itemTypes = process.GetItemTypes();
-            if (itemTypes == null || itemTypes.Count() == 0)
-            {
-                Console.WriteLine("No items sold yet.");
-                return;
-            }
+        //static void DeleteItem()
+        //{
+        //    Console.WriteLine(" ------------------------------------------");
+        //    Console.WriteLine("Enter Item Name: ");
+        //    string itemName = CoffeeShopProcess.GetUserInput();
 
-            double grandTotal = 0;
-            foreach (string itemType in itemTypes)
-            {
-                Console.WriteLine(" ------------------------------------------");
-                Console.WriteLine(itemType + " \t\t" + "COST" + "\t" + "Sold  Count" + "\t" + "Total");
-                Console.WriteLine(" ------------------------------------------");
+        //    if (process.DeleteItem(itemName))
+        //    {
+        //        Console.WriteLine(" ------------------------------------------");
+        //        Console.WriteLine(itemName + " is DELETED successfully");
+        //        Console.WriteLine(" ------------------------------------------");
+        //    }
+        //    else
+        //    {
+        //        Console.WriteLine(" ------------------------------------------");
+        //        Console.WriteLine(itemName + " does NOT EXIST");
+        //        Console.WriteLine(" ------------------------------------------");
+        //    }
+        //}
+        //static void ViewSoldSummary()
+        //{
+        //    var itemTypes = process.GetItemTypes();
+        //    if (itemTypes == null || itemTypes.Count() == 0)
+        //    {
+        //        Console.WriteLine("No items sold yet.");
+        //        return;
+        //    }
 
-                var items = process.GetItemsPerType(itemType);
-                if (items != null && items.Count > 0)
-                {
-                    double totalSoldPerType = 0;
-                    foreach (var item in items)
-                    {
-                        double totalSoldPerItem = item.soldCount * item.cost;
-                        totalSoldPerType += totalSoldPerItem;
-                        Console.WriteLine(item.name + " \t\t" + item.cost + "\t" + item.soldCount + "\t" + totalSoldPerItem);
-                    }
-                    Console.WriteLine(" ------------------------------------------");
-                    Console.WriteLine("Total for " + itemType + ": " + totalSoldPerType);
-                    grandTotal += totalSoldPerType;
-                }
-                else
-                {
-                    Console.WriteLine("No items sold in this category.");
-                }
-                Console.WriteLine(" ------------------------------------------\n");
-            }
-            Console.WriteLine("Grand Total: " + grandTotal);
-        }
+        //    double grandTotal = 0;
+        //    foreach (string itemType in itemTypes)
+        //    {
+        //        Console.WriteLine(" ------------------------------------------");
+        //        Console.WriteLine(itemType + " \t\t" + "COST" + "\t" + "Sold  Count" + "\t" + "Total");
+        //        Console.WriteLine(" ------------------------------------------");
+
+        //        var items = process.GetItemsPerType(itemType);
+        //        if (items != null && items.Count > 0)
+        //        {
+        //            double totalSoldPerType = 0;
+        //            foreach (var item in items)
+        //            {
+        //                double totalSoldPerItem = item.soldCount * item.cost;
+        //                totalSoldPerType += totalSoldPerItem;
+        //                Console.WriteLine(item.name + " \t\t" + item.cost + "\t" + item.soldCount + "\t" + totalSoldPerItem);
+        //            }
+        //            Console.WriteLine(" ------------------------------------------");
+        //            Console.WriteLine("Total for " + itemType + ": " + totalSoldPerType);
+        //            grandTotal += totalSoldPerType;
+        //        }
+        //        else
+        //        {
+        //            Console.WriteLine("No items sold in this category.");
+        //        }
+        //        Console.WriteLine(" ------------------------------------------\n");
+        //    }
+        //    Console.WriteLine("Grand Total: " + grandTotal);
+        //}
     }
 }

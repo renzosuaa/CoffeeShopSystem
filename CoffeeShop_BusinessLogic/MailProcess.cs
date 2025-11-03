@@ -4,18 +4,20 @@ using System.Linq;
 using System.Text;
 using CoffeeShopCommon;
 using System.Threading.Tasks;
-
+using Microsoft.Extensions.Configuration;
 namespace CoffeeShopSystem_BusinessLogic
 {
     using MailKit.Net.Smtp;
+    using MailKit.Security;
     using MimeKit;
     using System.Collections.Specialized;
 
     public class MailProcess
     {
-        public MailProcess()
+        private readonly IConfiguration _configuration;
+        public MailProcess(IConfiguration configuration)
         {
-     
+            _configuration = configuration;
         }
 
         public void SendEmail(MailRequest request)
@@ -23,7 +25,7 @@ namespace CoffeeShopSystem_BusinessLogic
             try
             {
                 using var email = new MimeMessage();
-                email.From.Add(new MailboxAddress("Coffee++", "no-reply@demomailtrap.co"));
+                email.From.Add(new MailboxAddress(_configuration["EmailSettings:FromName"], _configuration["EmailSettings:Fromemail"]));
                 email.To.Add(new MailboxAddress("", request.email));
                 var builder = new BodyBuilder();
 
@@ -61,20 +63,14 @@ namespace CoffeeShopSystem_BusinessLogic
                     return;
                 }
 
-
-
-
                 email.Body = builder.ToMessageBody();
 
                 using var smtp = new SmtpClient();
-                smtp.Connect("sandbox.smtp.mailtrap.io", 2525, false);
+                smtp.Connect(_configuration["EmailSettings:SmtpHost"], int.Parse(_configuration["EmailSettings:SmtpPort"]), SecureSocketOptions.StartTls);
                 smtp.Authenticate("bfdc526e0f12fd", "7d4cb4fb61e390");
                 smtp.Send(email);
 
                 smtp.Disconnect(true);
-                Console.WriteLine("ORDER SUCCESS");
-
-
             }
             catch (Exception ex)
             {

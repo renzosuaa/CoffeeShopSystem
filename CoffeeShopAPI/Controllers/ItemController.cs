@@ -8,7 +8,12 @@ namespace CoffeeShopAPI.Controllers
     [ApiController]
     public class ItemController : ControllerBase
     {
-        CoffeeShopSystem_BusinessLogic.CoffeeShopProcess itemProcess = new CoffeeShopSystem_BusinessLogic.CoffeeShopProcess();
+        CoffeeShopSystem_BusinessLogic.CoffeeShopProcess itemProcess;
+        
+        public ItemController(CoffeeShopSystem_BusinessLogic.CoffeeShopProcess itemProcess)
+        {
+            this.itemProcess = itemProcess;
+        }
 
         [HttpGet("GetAllItem")]
         public IEnumerable<Item> GetAllItems()
@@ -48,9 +53,9 @@ namespace CoffeeShopAPI.Controllers
         }
 
         [HttpPatch("AddSoldCount")]
-        public void AddSoldCount(List<Item> order)
+        public void AddSoldCount(List<Item> order, string email)
         {
-            itemProcess.AddSoldCount(order);
+            itemProcess.AddSoldCount(order, email);
         }
 
         [HttpPost("AddItem")]

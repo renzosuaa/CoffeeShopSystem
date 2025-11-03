@@ -1,4 +1,4 @@
-
+using CoffeeShopSystem_BusinessLogic;
 namespace CoffeeShopAPI
 {
     public class Program
@@ -13,7 +13,9 @@ namespace CoffeeShopAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.AddScoped<CoffeeShopProcess>();
+            builder.Services.AddScoped<MailProcess>();
+            builder.Services.AddScoped<UserProcess>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -12,11 +12,12 @@ namespace CoffeeShopSystem_BusinessLogic
     // general actions
     public class CoffeeShopProcess
     {
-        internal ItemDataService_JSON DataProcess = new ItemDataService_JSON();
+        internal ItemDataService_InMemory DataProcess = new ItemDataService_InMemory();
         public  List<Item> itemList  = new List<Item>();
-
-        public CoffeeShopProcess()
+        MailProcess mailProcess;
+        public CoffeeShopProcess(MailProcess mailProcess)
         {
+            this.mailProcess = mailProcess;
             itemList = new List<Item>(DataProcess.GetItems());
         }
 
@@ -26,13 +27,20 @@ namespace CoffeeShopSystem_BusinessLogic
             return itemList;
         }
 
-        public void AddSoldCount(List<Item> order)
+        public void AddSoldCount(List<Item> order, string email)
         {
             foreach (Item item in order)
             {
                 DataProcess.AddSoldCount(item.name, item.soldCount);
             }
-            
+            string receipt = "";            
+            foreach(Item item in order)
+            {
+                receipt += $"{item.cost} {item.name} = {item.cost * item.soldCount}\n";
+            }
+
+            MailRequest request = new MailRequest(email, "receipt", receipt);
+            mailProcess.SendEmail(request);
         }
 
         public Item GetOrderName(int order)

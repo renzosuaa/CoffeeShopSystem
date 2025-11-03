@@ -13,9 +13,9 @@ namespace CoffeeShopSystem_BusinessLogic
     public class OrderProcess
     {
         Order_DataService_JSON Data_Service;
-        int userID = 0;
+        int userID;
 
-        public OrderProcess(int userID)
+        public OrderProcess(int userID = 0)
         {
             Data_Service = new Order_DataService_JSON(userID);
             this.userID = userID;
