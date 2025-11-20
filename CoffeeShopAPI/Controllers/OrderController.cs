@@ -17,7 +17,7 @@ namespace CoffeeShopAPI.Controllers
             return orderProcess.GetAllOrderItems();
         }
 
-        [HttpGet("GetOrderItemTypes")]
+        [HttpGet("item-types")]
         List<string> GetOrderItemTypes()
         {
             HashSet<string> types = new HashSet<string>();
@@ -28,8 +28,8 @@ namespace CoffeeShopAPI.Controllers
             return types.ToList();
         }
 
-        [HttpGet("GetTotalPerType")]
-        double GetTotalPerType(string itemType)
+        [HttpGet("total-per-type/{itemType}")]
+        public double GetTotalPerType(string itemType)
         {
             double total = 0;
             foreach (Item order in GetAllOrderItems())
@@ -42,28 +42,29 @@ namespace CoffeeShopAPI.Controllers
             return total;
         }
 
-        [HttpDelete("ClearOrder")]
+
+        [HttpDelete]
         public void ClearOrder()
         {
            orderProcess.ClearOrder();
         }
 
-        [HttpPost("AddToOrder")]
+        [HttpPost("items")]
         public void AddOrder(Item item)
         {
             orderProcess.AddOrder(item);
         }
 
 
-        [HttpPost("SaveCurrentOrder")]
+        [HttpPost]
         public void SaveCurrentOrder()
         {
             orderProcess.SaveCurrentOrder();
         }
 
 
-        [HttpGet("GetUserOrders")]
-        public void GEtUserOrders(Item item)
+        [HttpGet("user/orders")]
+        public void GetUserOrders()
         {
             orderProcess.GetUserOrders();
         }

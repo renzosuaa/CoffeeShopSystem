@@ -17,32 +17,32 @@ namespace CoffeeShopAPI.Controllers
             this.userProcess = userProcess;
         }
         
-        [HttpGet("ValidatePassword")]
+        [HttpPost("validate-password")]
         public bool ValidatePassword(string password, string password2)
         {
             return userProcess.ValidatePassword(password, password2);
         }
 
-        [HttpGet("ValidateAdmin")]
+        [HttpPost("validate-admin")]
         public bool ValidateAdmin(string email, string password)
         {
             return userProcess.ValidateAdmin(email, password);
         }
 
-        [HttpGet("ValidateUser")]
+        [HttpPost("validate-user")]
         public bool ValidateUser(string email, string password)
         {
             return userProcess.ValidateUser(email, password);
         }
 
-        [HttpGet("GetUserID")]
+        [HttpGet("id/{email}")]
         public int GetUserID(string email)
         {
             return userProcess.GetUserID(email);
         }
 
 
-        [HttpPost("RegisterUser")]
+        [HttpPost("register")]
         public void RegisterUser(string email, string password)
         {
             userProcess.RegisterUser(email, password);

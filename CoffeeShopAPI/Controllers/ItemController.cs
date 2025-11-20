@@ -15,56 +15,56 @@ namespace CoffeeShopAPI.Controllers
             this.itemProcess = itemProcess;
         }
 
-        [HttpGet("GetAllItem")]
+        [HttpGet]
         public IEnumerable<Item> GetAllItems()
         {
             return itemProcess.GetAllItems();
         }
 
-        [HttpGet("GetItemTypes")]
+        [HttpGet("types")]
         public List<String> GetItemTypes()
         {
             List<String> itemTypes = new List<string>( itemProcess.GetItemTypes());
             return itemTypes;
         }
 
-        [HttpGet("Get Order Name")]
-        public Item GetOrderName(int order)
+        [HttpGet("{orderID}")]
+        public Item GetOrderName(int orderid)
         {
-            return itemProcess.GetOrderName(order);
+            return itemProcess.GetOrderName(orderid);
         }
 
-        [HttpGet("GetOrderListCount")]
+        [HttpGet("count")]
         public int GetOrderListCount()
         {
             return itemProcess.itemList.Count;
         }
 
-        [HttpGet("GetTotalPerType")]
+        [HttpGet("total-per-type/{itemType}")]
         public double GetTotalPerType(string itemType)
         {
             return itemProcess.GetTotalPerType(itemType);
         }
 
-        [HttpGet("GetItemsPerType")]
+        [HttpGet("type/{itemType}")]
         public List<Item> GetItemsPerType(string itemType)
         {
             return itemProcess.GetItemsPerType(itemType);
         }
 
-        [HttpPatch("AddSoldCount")]
+        [HttpPatch("sold-count")]
         public void AddSoldCount(List<Item> order, string email)
         {
             itemProcess.AddSoldCount(order, email);
         }
 
-        [HttpPost("AddItem")]
+        [HttpPost]
         public void AddItem(string itemName, double itemCost, string itemType)
         {
             itemProcess.AddItem(itemName, itemCost, itemType);
         }
 
-        [HttpDelete("DeleteItem")]
+        [HttpDelete("{itemName}")]
         public bool DeleteItem(string itemName)
         {
             return itemProcess.DeleteItem(itemName);
